@@ -57,7 +57,7 @@ We would like to express our gratitude to the developers of lerobot for their ou
 
 #### Training <a name="training"></a>
 
-To train a simple Difffusion Policy, please refer to this [Jupyter](https://github.com/OpenDriveLab/AgiBot-World/blob/main/AgibotWorld.ipynb).
+To train a simple Diffusion Policy, please refer to this [Jupyter](https://github.com/OpenDriveLab/AgiBot-World/blob/main/AgibotWorld.ipynb).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
