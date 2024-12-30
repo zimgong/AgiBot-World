@@ -15,7 +15,7 @@
 - **Wide-spectrum versatile challenging tasks**
 
 <div style="max-width: 100%; overflow-x: auto; margin: 0 auto;">
-  <table style="border-collapse: collapse; border: none; width: 100%; table-layout: fixed;">
+  <table style="border-collapse: collapse; border-spacing: 0; width: 100%; table-layout: fixed;">
     <tr style="border: none;">
       <td align="center" style="border: none; padding: 10px;">
         <img src="assets/Contact-rich_manipulation.gif" alt="Contact-rich Manipulation" width="230" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -32,6 +32,7 @@
     </tr>
   </table>
 </div>
+
 
 
 ## News📰 <a name="news"></a>
