@@ -22,7 +22,7 @@
 
 
 
-## News <a name="news"></a>
+## News
 
 - **`[2024/12/30]`** 🤖 Agibot World demo released.
 
