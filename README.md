@@ -45,5 +45,5 @@ Suppose you have already downloaded the dataset from Hugging Face, we recommend 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-# License and Citation
+## License and Citation
 All assets and code in this repository are under the [MIT License](./LICENSE) unless specified otherwise. The data is under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
