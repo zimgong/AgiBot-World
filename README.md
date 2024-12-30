@@ -1,8 +1,6 @@
-![agibot_world](https://github.com/user-attachments/assets/df64b543-db82-41ee-adda-799970e8a198)
-
-
-
 <div id="top" align="center">
+
+![agibot_world](https://github.com/user-attachments/assets/df64b543-db82-41ee-adda-799970e8a198)
 
 
 [![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) ![Static Badge](https://img.shields.io/badge/License-MIT-blue?style=plastic)
@@ -15,24 +13,32 @@
 - **100+ real-world scenarios** across 5 target domains.
 - **Cutting-edge hardware:** visual tactile sensors / 6-DoF Dexterous hand / mobile dual-arm robots
 - **Tasks involving:**
-  - Contact-rich manipulation
-  - Long-horizon planning
-  - Multi-robot collaboration
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-    <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+<table style="border-collapse: collapse; border: none;">
+  <tr style="border: none;">
+    <td align="center" style="border: none;">
+      <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <source src="assets/Contact-rich_manipulation.mp4" type="video/mp4">
         Your browser does not support the video tag.
-    </video>
-    <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <source src="assets/Long-horizon_planning.mp4" type="video/mp4">
+      </video>
+      <p>Contact-rich Manipulation</p>
+    </td>
+    <td align="center" style="border: none;">
+      <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <source src="assets/Long-horizon_planning.mp4"， type="video/mp4">
         Your browser does not support the video tag.
-    </video>
-    <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <source src="assets/Multi-robot_collaboration.mp4" type="video/mp4">
+      </video>
+      <p>Long-horizon Planning</p>
+    </td>
+    <td align="center" style="border: none;">
+      <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <source src="assets/Multi-robot_collaboration.mp4"  type="video/mp4">
         Your browser does not support the video tag.
-    </video>
-</div>
+      </video>
+      <p>Multi-robot Collaboration</p>
+    </td>
+  </tr>
+</table>
 
 
 ## News📰 <a name="news"></a>
@@ -68,11 +74,11 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 ## TODO List 📅 <a name="todolist"></a>
 
 - [x] **AgiBot World Alpha**
-- [ ] **AgiBot World Beta**: (expected Q1 2025)
+- [ ] **AgiBot World Beta** (expected Q1 2025)
   - [ ] ~1,000,000 trajectories of high-quality robot data 
   - [ ] ACT、DP3、OpenVLA and some other baseline models
-- [ ] **AgiBot World Colosseum**:Comprehensive platform (expected 2025)
-  - [ ] Comprehensive platform including teleoperation, training, inference tools.
+- [ ] **AgiBot World Colosseum** (expected 2025)
+  - [ ] A comprehensive platform including teleoperation, training and inference tools.
 - [ ] **2025 AgiBot World Challenge** (expected 2025)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
