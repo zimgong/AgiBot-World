@@ -68,10 +68,10 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 ## TODO List 📅 <a name="todolist"></a>
 
 - [x] **AgiBot World Alpha**
-- [ ] **AgiBot World Beta** (expected Q1 2025)
+- [ ] **AgiBot World Beta**: (expected Q1 2025)
   - [ ] ~1,000,000 trajectories of high-quality robot data 
   - [ ] ACT、DP3、OpenVLA and some other baseline models
-- [ ] **AgiBot World Colosseum** (expected 2025)
+- [ ] **AgiBot World Colosseum**:Comprehensive platform (expected 2025)
   - [ ] Comprehensive platform including teleoperation, training, inference tools.
 - [ ] **2025 AgiBot World Challenge** (expected 2025)
 
