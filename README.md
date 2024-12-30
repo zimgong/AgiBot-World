@@ -1,7 +1,5 @@
 
-<p align="center">
-  <img src="assets/agibot_world.gif">
-</p>
+![agibot_world](https://github.com/user-attachments/assets/df64b543-db82-41ee-adda-799970e8a198)
 
 
 <div id="top" align="center">
