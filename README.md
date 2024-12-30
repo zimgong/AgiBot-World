@@ -21,7 +21,7 @@
 
 ## News <a name="news"></a>
 
-- **`[2024/12/30]`** 🤖 Agibot World demo released.
+- **`[2024/12/30]`** 🤖 AgiBot World demo released.
 
 ## Table of Contents
 1. [Key Features](#keyfeatures)
