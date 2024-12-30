@@ -10,35 +10,27 @@
 ## Key Features 🔑 <a name="keyfeatures"></a>
 
 - **1 million+** trajectories from 100 robots.
-- **100+ real-world scenarios** across 5 target domains.
+- **100+ 1:1 replicated real-life scenarios** across 5 target domains.
 - **Cutting-edge hardware:** visual tactile sensors / 6-DoF Dexterous hand / mobile dual-arm robots
-- **Tasks involving:**
+- **Wide-spectrum versatile challenging tasks**
 
 <table style="border-collapse: collapse; border: none;">
   <tr style="border: none;">
     <td align="center" style="border: none;">
-      <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <source src="assets/Contact-rich_manipulation.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <p>Contact-rich Manipulation</p>
+      <img src="assets/Contact-rich_manipulation.gif" alt="Contact-rich Manipulation" width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <p><b>Contact-rich Manipulation</b></p>
     </td>
     <td align="center" style="border: none;">
-      <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <source src="assets/Long-horizon_planning.mp4"， type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <p>Long-horizon Planning</p>
+      <img src="assets/Long-horizon_planning.gif" alt="Long-horizon Planning" width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <p><b>Long-horizon Planning</b></p>
     </td>
     <td align="center" style="border: none;">
-      <video controls autoplay loop muted width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <source src="assets/Multi-robot_collaboration.mp4"  type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <p>Multi-robot Collaboration</p>
+      <img src="assets/Multi-robot_collaboration.gif" alt="Multi-robot Collaboration" width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <p><b>Multi-robot Collaboration</b></p>
     </td>
   </tr>
 </table>
+
 
 
 ## News📰 <a name="news"></a>
@@ -58,18 +50,18 @@
 
 #### How to Get Started with Our AgiBot World Data <a name="preaparedata"></a>
 
-Download the data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
+Download data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
 
 ``` your settings: https://huggingface.co/settings/tokens
 git clone https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha
 ```
-Convert the data to LeRobot Dataset format following the detailed instructions [here](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha#dataset-preprocessing).
+Convert the data to **LeRobot Dataset** format following the detailed instructions [here](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha#dataset-preprocessing).
 
 #### Policy Training Quickstart <a name="training"></a>
 
 Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/lerobot), we provide a user-friendly [Jupyter Notebook](https://github.com/OpenDriveLab/AgiBot-World/blob/main/AgibotWorld.ipynb) for training diffusion policy on AgiBot World Dataset.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
 ## TODO List 📅 <a name="todolist"></a>
 
@@ -81,10 +73,10 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
   - [ ] A comprehensive platform including teleoperation, training and inference tools.
 - [ ] **2025 AgiBot World Challenge** (expected 2025)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
 
-## License and Citation   <a name="liscenseandcitation"></a>
+## License and Citation📄   <a name="liscenseandcitation"></a>
 
 All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Please consider citing our project if it helps your research.
 
