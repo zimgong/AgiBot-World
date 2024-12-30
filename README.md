@@ -9,30 +9,40 @@
 
 </div>
 
-
-
-# Key Features 🔑
+## Key Features 🔑 <a name="keyfeatures"></a>
 - **One million+** trajectories from 100 robots.
 - **100+ real-world scenarios** across 5 target domains.
 - **Cutting-edge hardware:** visual tactile sensors / 6-DoF Dexterous hand / mobile dual-arm robots
 - **Tasks involving:**
-    - Fine-grained manipulation
-    - Tool usage
+    - Contact-rich manipulation
+    - Long-horizon planning
     - Multi-robot collaboration
 
 
-
-## News
+## News <a name="news"></a>
 
 - **`[2024/12/30]`** 🤖 Agibot World demo released.
 
+## Table of Contents
+1. [Key Features](#keyfeatures)
+2. [Getting Started](#gettingstarted)  
+3. [TODO List](#todolist)
 
-
-# Get started 🔥
+## Getting started 🔥 <a name="gettingstarted"></a>
 Our project relies solely on the lerobot library (dataset `v2.0`), We would like to express our gratitude to the developers of lerobot for their outstanding contributions to the community, please follow their [installation instructions](https://github.com/huggingface/lerobot).
 
 Suppose you have already downloaded the dataset from Hugging Face, we recommend converting it into the LeRobot format based on the data preprocessing section. Next, to train a simple Difffusion Policy, please refer to this [Jupyter](https://github.com/OpenDriveLab/Agibot-World/AgibotWorld.ipynb).
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## TODO List <a name="todolist"></a>
+
+- [x] AgiBot World Alpha
+- [ ] AgiBot World Beta: ~1,000,000 trajectories of high-quality robot data. (expected release date: 2025 Q1)
+- [ ] AgiBot World Colloseo: Comprehensive platform launching in 2025. (expected release date: 2025 Q2)
+- [ ] AgiBot World Challenge 2025
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 # License and Citation
