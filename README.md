@@ -14,7 +14,7 @@
 - **Cutting-edge hardware:** visual tactile sensors / 6-DoF Dexterous hand / mobile dual-arm robots
 - **Wide-spectrum versatile challenging tasks**
 
-<div style="max-width: 100%; overflow-x: auto; margin: 0 auto;">
+<div style="max-width: 100%; overflow-x: auto; margin: 0 auto; !important;">
   <table style="border-collapse: collapse; border-spacing: 0; width: 100%; table-layout: fixed;">
     <tr style="border: none;">
       <td align="center" style="border: none; padding: 10px;">
