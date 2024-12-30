@@ -14,23 +14,24 @@
 - **Cutting-edge hardware:** visual tactile sensors / 6-DoF Dexterous hand / mobile dual-arm robots
 - **Wide-spectrum versatile challenging tasks**
 
-<table style="border-collapse: collapse; border: none;">
-  <tr style="border: none;">
-    <td align="center" style="border: none;">
-      <img src="assets/Contact-rich_manipulation.gif" alt="Contact-rich Manipulation" width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-      <p><b>Contact-rich Manipulation</b></p>
-    </td>
-    <td align="center" style="border: none;">
-      <img src="assets/Long-horizon_planning.gif" alt="Long-horizon Planning" width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-      <p><b>Long-horizon Planning</b></p>
-    </td>
-    <td align="center" style="border: none;">
-      <img src="assets/Multi-robot_collaboration.gif" alt="Multi-robot Collaboration" width="300" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-      <p><b>Multi-robot Collaboration</b></p>
-    </td>
-  </tr>
-</table>
-
+<div style="max-width: 100%; overflow-x: auto; margin: 0 auto;">
+  <table style="border-collapse: collapse; border: none; width: 100%; table-layout: fixed;">
+    <tr style="border: none;">
+      <td align="center" style="border: none; padding: 10px;">
+        <img src="assets/Contact-rich_manipulation.gif" alt="Contact-rich Manipulation" width="230" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <p><b>Contact-rich Manipulation</b></p>
+      </td>
+      <td align="center" style="border: none; padding: 10px;">
+        <img src="assets/Long-horizon_planning.gif" alt="Long-horizon Planning" width="230" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <p><b>Long-horizon Planning</b></p>
+      </td>
+      <td align="center" style="border: none; padding: 10px;">
+        <img src="assets/Multi-robot_collaboration.gif" alt="Multi-robot Collaboration" width="230" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <p><b>Multi-robot Collaboration</b></p>
+      </td>
+    </tr>
+  </table>
+</div>
 
 
 ## News📰 <a name="news"></a>
@@ -70,7 +71,7 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
   - [ ] ~1,000,000 trajectories of high-quality robot data 
   - [ ] ACT、DP3、OpenVLA and some other baseline models
 - [ ] **AgiBot World Colosseum** (expected 2025)
-  - [ ] A comprehensive platform including teleoperation, training and inference tools.
+  - [ ] A comprehensive platform with toolkits including teleoperation, training and inference.
 - [ ] **2025 AgiBot World Challenge** (expected 2025)
 
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
