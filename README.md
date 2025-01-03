@@ -43,12 +43,12 @@
 ## Table of Contents
 
 1. [Key Features](#keyfeatures)
-2. [Getting Started](#installation)  
+2. [Getting Started](#installation)
    - [Installation](#training)
-   - [How to Get Started with Our AgiBot World Data](#preaparedata)
+   - [How to Get Started with Our AgiBot World Data](#preparedata)
    - [Policy Learning Quickstart](#training)
 3. [TODO List](#todolist)
-4. [License and Citation](#liscenseandcitation)
+4. [License and Citation](#licenseandcitation)
 
 ## Getting started 🔥 <a name="gettingstarted"></a>
 
@@ -62,7 +62,7 @@ cd AgiBot-World
 
 Our project is built upon the [lerobot library](https://github.com/huggingface/lerobot) (dataset `v2.0`), please follow their [installation instructions](https://github.com/huggingface/lerobot?tab=readme-ov-file#installation).
 
-#### How to Get Started with Our AgiBot World Data <a name="preaparedata"></a>
+#### How to Get Started with Our AgiBot World Data <a name="preparedata"></a>
 
 Download data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
 
@@ -95,7 +95,7 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
 
-## License and Citation📄   <a name="liscenseandcitation"></a>
+## License and Citation📄   <a name="licenseandcitation"></a>
 
 All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Please consider citing our project if it helps your research.
 
