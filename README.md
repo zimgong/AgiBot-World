@@ -3,7 +3,7 @@
 ![agibot_world](https://github.com/user-attachments/assets/df64b543-db82-41ee-adda-799970e8a198)
 
 
-[![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) ![Static Badge](https://img.shields.io/badge/License-MIT-blue?style=plastic)
+[![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) [![License](https://img.shields.io/badge/License-CC_%20_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 </div>
 
@@ -37,12 +37,14 @@
 
 ## News📰 <a name="news"></a>
 
+- **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
 - **`[2024/12/30]`** 🤖 Agibot World Alpha released.
 
 ## Table of Contents
 
 1. [Key Features](#keyfeatures)
-2. [Getting Started](#gettingstarted)  
+2. [Getting Started](#installation)  
+   - [Installation](#training)
    - [How to Get Started with Our AgiBot World Data](#preaparedata)
    - [Policy Learning Quickstart](#training)
 3. [TODO List](#todolist)
@@ -50,14 +52,29 @@
 
 ## Getting started 🔥 <a name="gettingstarted"></a>
 
+#### Installation <a name="installation"></a>
+
+Download our source code:
+```bash
+git clone https://github.com/OpenDriveLab/AgiBot-World.git
+cd AgiBot-World
+```
+
+Our project is built upon the [lerobot library](https://github.com/huggingface/lerobot) (dataset `v2.0`), please follow their [installation instructions](https://github.com/huggingface/lerobot?tab=readme-ov-file#installation).
+
 #### How to Get Started with Our AgiBot World Data <a name="preaparedata"></a>
 
 Download data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
 
-``` your settings: https://huggingface.co/settings/tokens
+```bash
 git clone https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha
 ```
-Convert the data to **LeRobot Dataset** format following the detailed instructions [here](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha#dataset-preprocessing).
+The [sample dataset](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha/blob/main/sample_dataset.tar) is also available for quick preview now.
+Convert the data to **LeRobot Dataset** format.
+
+```bash
+python scripts/convert_to_lerobot.py --src_path /path/to/agibotworld/alpha --task_id 352 --tgt_path /path/to/save/lerobot
+```
 
 #### Policy Training Quickstart <a name="training"></a>
 
