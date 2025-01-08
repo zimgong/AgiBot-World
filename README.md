@@ -33,8 +33,6 @@
   </table>
 </div>
 
-
-
 ## News📰 <a name="news"></a>
 
 - **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
@@ -43,12 +41,13 @@
 ## Table of Contents
 
 1. [Key Features](#keyfeatures)
-2. [Getting Started](#installation)
+2. [Getting Started](#installation)  
    - [Installation](#training)
-   - [How to Get Started with Our AgiBot World Data](#preparedata)
+   - [How to Get Started with Our AgiBot World Data](#preaparedata)
+   - [Visualize Datasets](#visualizedatasets)
    - [Policy Learning Quickstart](#training)
 3. [TODO List](#todolist)
-4. [License and Citation](#licenseandcitation)
+4. [License and Citation](#liscenseandcitation)
 
 ## Getting started 🔥 <a name="gettingstarted"></a>
 
@@ -62,7 +61,7 @@ cd AgiBot-World
 
 Our project is built upon the [lerobot library](https://github.com/huggingface/lerobot) (dataset `v2.0`), please follow their [installation instructions](https://github.com/huggingface/lerobot?tab=readme-ov-file#installation).
 
-#### How to Get Started with Our AgiBot World Data <a name="preparedata"></a>
+#### How to Get Started with Our AgiBot World Data <a name="preaparedata"></a>
 
 Download data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
 
@@ -75,6 +74,19 @@ Convert the data to **LeRobot Dataset** format.
 ```bash
 python scripts/convert_to_lerobot.py --src_path /path/to/agibotworld/alpha --task_id 352 --tgt_path /path/to/save/lerobot
 ```
+
+#### Visualize Datasets <a name="visualizedatasets"></a>
+
+We adapt and extend the dataset visualization script from [LeRobot Project](https://github.com/huggingface/lerobot/blob/main/lerobot/scripts/visualize_dataset.py)
+
+```bash
+python scripts/visualize_dataset.py --task-id 352 --dataset-path /path/to/lerobot/format/dataset
+```
+
+It will open `rerun.io` and display the camera streams, robot states and actions, like this:
+<div style="text-align: center;">
+<img src="assets/dataset_visualization.gif" width="600">
+</div>
 
 #### Policy Training Quickstart <a name="training"></a>
 
@@ -95,7 +107,7 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
 
-## License and Citation📄   <a name="licenseandcitation"></a>
+## License and Citation📄   <a name="liscenseandcitation"></a>
 
 All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Please consider citing our project if it helps your research.
 
