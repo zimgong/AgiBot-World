@@ -52,7 +52,7 @@
 
 ## At a Quick Glance⬇️ <a name="quickglance"></a>
 
-Follow the steps below to quickly explore and get an overview of AgiBot World with our [sample dataset](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha/resolve/main/sample_dataset.tar) (~7GB).
+Follow the steps below to quickly explore and get an overview of AgiBot World with our [sample dataset](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha/blob/main/sample_dataset.tar) (~7GB).
 
 ```bash
 # Installation
@@ -61,13 +61,14 @@ conda activate agibotworld
 git clone https://github.com/huggingface/lerobot.git
 cd lerobot
 pip install -e .
-
+pip install matplotlib
 cd ..
 git clone https://github.com/OpenDriveLab/AgiBot-World.git
 cd AgiBot-World
+
+# Download the sample dataset (~7GB) from Hugging Face. Replace <your_access_token> with your Hugging Face Access Token. You can generate an access token by following the instructions in the Hugging Face documentation from https://huggingface.co/docs/hub/security-tokens
 mkdir data
 cd data
-# Download the sample dataset (~7GB) from Hugging Face. Replace <your_access_token> with your Hugging Face Access Token. You can generate an access token by following the instructions in the Hugging Face documentation from https://huggingface.co/docs/hub/security-tokens
 curl -L -o sample_dataset.tar -H "Authorization: Bearer <your_access_token>" https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha/resolve/main/sample_dataset.tar
 tar -xvf sample_dataset.tar
 
