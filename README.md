@@ -41,13 +41,42 @@
 ## Table of Contents
 
 1. [Key Features](#keyfeatures)
-2. [Getting Started](#installation)  
+2. [At a Quick Glance](#quickglance) 
+3. [Getting Started](#installation)  
    - [Installation](#training)
    - [How to Get Started with Our AgiBot World Data](#preaparedata)
    - [Visualize Datasets](#visualizedatasets)
    - [Policy Learning Quickstart](#training)
-3. [TODO List](#todolist)
-4. [License and Citation](#liscenseandcitation)
+4. [TODO List](#todolist)
+5. [License and Citation](#liscenseandcitation)
+
+## At a Quick Glance⬇️ <a name="quickglance"></a>
+
+Follow the steps below to quickly explore and get an overview of AgiBot World with our [sample dataset](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha/blob/main/sample_dataset.tar) (~7GB).
+
+```bash
+# Installation
+conda create -n agibotworld python=3.10 -y
+conda activate agibotworld
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+pip install -e .
+pip install matplotlib
+cd ..
+git clone https://github.com/OpenDriveLab/AgiBot-World.git
+cd AgiBot-World
+
+# Download the sample dataset (~7GB) from Hugging Face. Replace <your_access_token> with your Hugging Face Access Token. You can generate an access token by following the instructions in the Hugging Face documentation from https://huggingface.co/docs/hub/security-tokens
+mkdir data
+cd data
+curl -L -o sample_dataset.tar -H "Authorization: Bearer <your_access_token>" https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha/resolve/main/sample_dataset.tar
+tar -xvf sample_dataset.tar
+
+# Convert the sample dataset to LeRobot dataset format and visualize
+cd ..
+python scripts/convert_to_lerobot.py --src_path ./data/sample_dataset --task_id 390 --tgt_path ./data/sample_lerobot
+python scripts/visualize_dataset.py --task-id 390 --dataset-path ./data/sample_lerobot
+```
 
 ## Getting started 🔥 <a name="gettingstarted"></a>
 
@@ -66,13 +95,13 @@ Our project is built upon the [lerobot library](https://github.com/huggingface/l
 Download data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
 
 ```bash
-git clone https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha
+huggingface-cli download --resume-download --repo-type dataset agibot-world/AgiBotWorld-Alpha --local-dir ./AgiBotWorld-Alpha
 ```
-The [sample dataset](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha/blob/main/sample_dataset.tar) is also available for quick preview now.
+
 Convert the data to **LeRobot Dataset** format.
 
 ```bash
-python scripts/convert_to_lerobot.py --src_path /path/to/agibotworld/alpha --task_id 352 --tgt_path /path/to/save/lerobot
+python scripts/convert_to_lerobot.py --src_path /path/to/agibotworld/alpha --task_id 390 --tgt_path /path/to/save/lerobot
 ```
 
 #### Visualize Datasets <a name="visualizedatasets"></a>
@@ -80,7 +109,7 @@ python scripts/convert_to_lerobot.py --src_path /path/to/agibotworld/alpha --tas
 We adapt and extend the dataset visualization script from [LeRobot Project](https://github.com/huggingface/lerobot/blob/main/lerobot/scripts/visualize_dataset.py)
 
 ```bash
-python scripts/visualize_dataset.py --task-id 352 --dataset-path /path/to/lerobot/format/dataset
+python scripts/visualize_dataset.py --task-id 390 --dataset-path /path/to/lerobot/format/dataset
 ```
 
 It will open `rerun.io` and display the camera streams, robot states and actions, like this:
