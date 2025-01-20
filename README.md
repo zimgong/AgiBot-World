@@ -92,14 +92,14 @@ Our project is built upon the [lerobot library](https://github.com/huggingface/l
 
 #### How to Get Started with Our AgiBot World Data <a name="preaparedata"></a>
 
-Download data from our [OpenDataLab](https://opendatalab.com/OpenDriveLab/AgiBot-World) page.
+- [OPTION 1] Download data from our [OpenDataLab](https://opendatalab.com/OpenDriveLab/AgiBot-World) page.
 
 ```bash
-pip install openxlab #安装
-openxlab dataset get --dataset-repo OpenDriveLab/AgiBot-World #数据集下载
+pip install openxlab # install CLI
+openxlab dataset get --dataset-repo OpenDriveLab/AgiBot-World # dataset download
 ```
 
-Download data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
+- [OPTION 2] Download data from our [HuggingFace](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha) page.
 
 ```bash
 huggingface-cli download --resume-download --repo-type dataset agibot-world/AgiBotWorld-Alpha --local-dir ./AgiBotWorld-Alpha
