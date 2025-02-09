@@ -585,7 +585,11 @@ def main(
         all_subdir = all_subdir[:2]
 
     # Get all episode id
-    all_subdir_eids = [int(Path(path).name) for path in all_subdir]
+    all_subdir_eids = []
+    for path in all_subdir:
+        id = Path(path).name
+        if id.isdigit():
+            all_subdir_eids.append(int(id))
 
     if debug:
         raw_datasets_before_filter = [
