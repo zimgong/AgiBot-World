@@ -164,7 +164,7 @@ Qingwen Bu, Guanghui Ren, Chiming Liu, Chengen Xie, Modi Shi, Xindong He, Jianhe
 
 ### Algorithm
 **Roadmap and Methodology** <br>
-Yao Mu, Li Chen, Yixuan Pan, Yan Ding
+Yao Mu, Li Chen, Yixuan Pan, Yan Ding <br>
 **Pre-training** <br>
 Xindong He, Jianheng Song, Yi Liu, Yuxin Jiang, Xiuqi Cui <br>
 **Post-training** <br>
