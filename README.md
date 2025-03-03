@@ -149,7 +149,7 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Please consider citing our project if it helps your research. For the full authorship and detailed contributions, please refer to [colosseo_contributions](CONTRIBUTING.md).
 
 ```BibTeX
-@misc{contributors2024agibotworldrepo,
+@misc{contributors2024agibotworld,
   title={AgiBot World Colosseo},
   author={Bin Zhao and Chi Zhang and Chengen Xie and Cheng Jing and Cheng Ruan and Chengyue Zhao and Chonghao Sima and Chiming Liu and Cunbiao Yang and Dafeng Wei and Guo Xu and Guanghui Ren and Hongyang Li and Huijie Wang and Jialu Li and Jiaqi Shan and Jiaqi Zhao and Jia Zeng and Jianchao Zhu and Jianheng Song and Jianlan Luo and Jisong Cai and Jiangmiao Pang and Junchi Yan and Li Chen and Lei Yang and Maoqing Yao and Mingkang Shi and Modi Shi and Ping Luo and Qinglin Zhang and Qingwen Bu and Shukai Yang and Siyuan Feng and Wenhao Wang and Xindong He and Xiuqi Cui and Xuan Hu and Xu Huang and Yan Ding and Yao Mu and Yi Liu and Yongjian Shen and Yuxiang Lu and Yuxin Jiang and Yu Qiao and Yuehan Niu and Ziyu Xiong},
   howpublished={\url{https://github.com/OpenDriveLab/AgiBot-World}},
