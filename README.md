@@ -151,38 +151,9 @@ All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creat
 ```BibTeX
 @misc{contributors2024agibotworldrepo,
   title={AgiBot World Colosseum},
-  author={AgiBot World Colosseum contributors and Bin Zhao and Chi Zhang and Chengen Xie and Cheng Jing and Cheng Ruan and Chengyue Zhao and Chonghao Sima and Chiming Liu and Cunbiao Yang and Dafeng Wei and Guo Xu and Guanghui Ren and Hongyang Li and Huijie Wang and Hui Fang and Jialu Li and Jiaqi Shan and Jiaqi Zhao and Jia Zeng and Jianchao Zhu and Jianheng Song and Jianlan Luo and Jisong Cai and Jiangmiao Pang and Junchi Yan and Li Chen and Lei Yang and Maoqing Yao and Mingkang Shi and Modi Shi and Ping Luo and Qinglin Zhang and Qingwen Bu and Shenyuan Gao and Shu Jiang and Shukai Yang and Siyuan Feng and Wenhao Wang and Xindong He and Xin Yin and Xiuqi Cui and Xuan Hu and Xu Huang and Yan Ding and Yao Mu and Yixuan Pan and Yi Liu and Yongjian Shen and Yuxiang Lu and Yuxin Jiang and Yu Qiao and Yuehan Niu and Ziyu Xiong},
+  author={AgiBot World Colosseum contributors and Bin Zhao and Chi Zhang and Chengen Xie and Cheng Jing and Cheng Ruan and Chengyue Zhao and Chonghao Sima and Chiming Liu and Cunbiao Yang and Dafeng Wei and Guo Xu and Guanghui Ren and Hongyang Li and Huijie Wang and Jialu Li and Jiaqi Shan and Jiaqi Zhao and Jia Zeng and Jianchao Zhu and Jianheng Song and Jianlan Luo and Jisong Cai and Jiangmiao Pang and Junchi Yan and Li Chen and Lei Yang and Maoqing Yao and Mingkang Shi and Modi Shi and Ping Luo and Qinglin Zhang and Qingwen Bu and Shukai Yang and Siyuan Feng and Wenhao Wang and Xindong He and Xiuqi Cui and Xuan Hu and Xu Huang and Yan Ding and Yao Mu and Yi Liu and Yongjian Shen and Yuxiang Lu and Yuxin Jiang and Yu Qiao and Yuehan Niu and Ziyu Xiong},
   howpublished={\url{https://github.com/OpenDriveLab/AgiBot-World}},
   year={2024}
 }
 ```
 
-## Contributors🦾
-
-### Core Contributors
-Qingwen Bu, Guanghui Ren, Chiming Liu, Chengen Xie, Modi Shi, Xindong He, Jianheng Song, Yuxiang Lu, Siyuan Feng
-
-### Algorithm
-**Roadmap and Methodology** <br>
-Yao Mu, Li Chen, Yixuan Pan, Yan Ding <br>
-**Pre-training** <br>
-Xindong He, Jianheng Song, Yi Liu, Yuxin Jiang, Xiuqi Cui <br>
-**Post-training** <br>
-Ziyu Xiong, Xu Huang, Dafeng Wei <br>
-**Deployment & Evaluation** <br>
-Siyuan Feng, Guo Xu, Shu Jiang <br>
-
-### Data Collection & Quality Check
-Cheng Ruan, Jia Zeng, Lei Yang
-
-### Manuscript Writing
-Jisong Cai, Chonghao Sima, Shenyuan Gao
-
-### Product & Ecosystem
-Chengyue Zhao, Shukai Yang, Huijie Wang, Yongjian Shen, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan, Jialu Li, Hui Fang
-
-### Hardware & Software Development
-Yuehan Niu, Cheng Jing, Mingkang Shi, Chi Zhang, Yin Xin, Qinglin Zhang, Cunbiao Yang, Wenhao Wang, Xuan Hu
-
-### Project Co-lead and Advising
-Maoqing Yao, Yu Qiao, Hongyang Li, Jianlan Luo, Jiangmiao Pang, Bin Zhao, Junchi Yan, Ping Luo
