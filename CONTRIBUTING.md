@@ -7,7 +7,7 @@
 We list all authors according to their contributions below. Thank all the authors here!
 
 ### 🌟Core Contributors
- - *Qingwen Bu, Guanghui Ren, Chiming Liu, Chengen Xie, Modi Shi, Xindong He, Jianheng Song, Yuxiang Lu, Siyuan Feng* 
+ - *[Qingwen Bu](https://scholar.google.com/citations?user=-JCRysgAAAAJ&hl=zh-CN), Guanghui Ren, Chiming Liu, Chengen Xie, Modi Shi, Xindong He, Jianheng Song, Yuxiang Lu, Siyuan Feng* 
 
 
 ### 🌏Algorithm
