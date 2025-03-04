@@ -143,7 +143,10 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 
 ## License and Citation📄   <a name="liscenseandcitation"></a>
 
-All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Please consider citing our project if it helps your research. For the full authorship and detailed contributions, please refer to [contributions](CONTRIBUTING.md).
+All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
+
+- Please consider citing our work either way below if it helps your research.
+- For the full authorship and detailed contributions, please refer to [contributions](CONTRIBUTING.md).
 
 
 ```BibTeX
@@ -152,5 +155,14 @@ All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creat
   author={AgiBot World Colosseo contributors},
   howpublished={\url{https://github.com/OpenDriveLab/AgiBot-World}},
   year={2024}
+}
+```
+
+```BibTeX
+@article{bu2025agibotworld,
+  title={AgiBot World Colosseo: Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems},
+  author={Bu, Qingwen and Ren, Guanghui and Liu, Chiming and Xie, Chengen and Shi, Modi and He, Xindong and Song, Jianheng and Lu, Yuxiang and Feng, Siyuan and Mu, Yao and Zhao, Chengyue and Yang, Shukai and Xiong, Ziyu and Huang, Xu and Wei, Dafeng and Xu, Guo and Liu, Yi and Jiang, Yuxin and Cui, Xiuqi and Ruan, Cheng and Zeng, Jia and Yang, Lei and Chen, Li and Ding, Yan and Cai, Jisong and Sima, Chonghao and Wang, Huijie and Shen, Yongjian and Li, Jialu and Zhao, Jiaqi and Zhu, Jianchao and Shan, Jiaqi and Niu, Yuehan and Jing, Cheng and Shi, Mingkang and Zhang, Chi and Zhang, Qinglin and Yang, Cunbiao and Wang, Wenhao and Hu, Xuan and Luo, Ping and Yan, Junchi and Zhao, Bin and Pang, Jiangmiao and Luo, Jianlan and Li, Hongyang and Qiao, Yu and Yao, Maoqing},
+  journal={arXiv preprint arXiv:25xx.xxx-to-appear},
+  year={2025}
 }
 ```
