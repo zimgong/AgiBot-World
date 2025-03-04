@@ -16,16 +16,16 @@ We list all authors according to their contributions below. Thank all the author
 > Technical roadmap, model training and evaluation<br>
 
 **Roadmap and Methodology** <br>
-- *Yao Mu, Li Chen, Yan Ding* <br>
+- *Yao Mu, Li Chen, Yan Ding, Yixuan Pan\** <br>
   
 **Pre-training** <br>
-- *Jianheng Song, Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
+- *Xindong He, Jianheng Song, Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
 
 **Post-training** <br>
 - *Ziyu Xiong, Xu Huang, Dafeng Wei* <br>
 
 **Deployment & Evaluation** <br>
-- *Siyuan Feng, Guo Xu* <br>
+- *Siyuan Feng, Guo Xu, Shu Jiang\** <br>
 
 ### 🦾Data Curation
 > Data collection, quality check
@@ -33,16 +33,22 @@ We list all authors according to their contributions below. Thank all the author
 
 ### 📖Manuscript Writing
 > Manuscript design, writing and revising
-- *Jisong Cai, Chonghao Sima*
+- *Jisong Cai, Chonghao Sima, Shenyuan Gao\**
 
 ### 💫Product & Ecosystem
 > System architecture design, project management, community engagement
-- *Chengyue Zhao, Shukai Yang, Huijie Wang, Yongjian Shen, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan, Jialu Li*
+- *Chengyue Zhao, Shukai Yang, Huijie Wang, Yongjian Shen, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan, Jialu Li, Hui Fang\**
 
 ### 🛠️Hardware & Software Development
 > Hardware design, embedded software development
-- *Yuehan Niu, Cheng Jing, Mingkang Shi, Chi Zhang, Qinglin Zhang, Cunbiao Yang, Wenhao Wang, Xuan Hu*
+- *Yuehan Niu, Cheng Jing, Mingkang Shi, Chi Zhang, Qinglin Zhang, Cunbiao Yang, Wenhao Wang, Xuan Hu, Yin Xin\**
 
 ### 🚀Project Co-lead and Advising
 > Research direction, project coordination, technical advising
 - *Maoqing Yao, Yu Qiao, Hongyang Li, Jianlan Luo, Jiangmiao Pang, Bin Zhao, Junchi Yan, Ping Luo*
+
+**Acknowledgement**
+
+```markdown
+For contributors marked with *, they are not listed in the author list due to number restrictions but still remain actual contributors to the project.
+```
