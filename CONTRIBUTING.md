@@ -47,8 +47,7 @@ We list all authors according to their contributions below. Thank all the author
 > Research direction, project coordination, technical advising
 - *Maoqing Yao, Yu Qiao, Hongyang Li, Jianlan Luo, Jiangmiao Pang, Bin Zhao, Junchi Yan, Ping Luo*
 
-
-<br><br><br>
+<br><br>
 
 **Acknowledgement**
 
