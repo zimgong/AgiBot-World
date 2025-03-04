@@ -146,7 +146,7 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 
 ## License and Citation📄   <a name="liscenseandcitation"></a>
 
-All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Please consider citing our project if it helps your research. For the full authorship and detailed contributions, please refer to [colosseo_contributions](CONTRIBUTING.md).
+All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Please consider citing our project if it helps your research. For the full authorship and detailed contributions, please refer to [contributions](CONTRIBUTING.md).
 
 
 ```BibTeX
