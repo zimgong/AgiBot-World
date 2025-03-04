@@ -19,13 +19,17 @@ We list all authors according to their contributions below. Thank all the author
 - *Yao Mu, Li Chen, Yan Ding* <br>
   
 **Pre-training** <br>
-- *Xindong He, Jianheng Song, Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
+- *Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
 
 **Post-training** <br>
 - *Ziyu Xiong, Xu Huang, Dafeng Wei* <br>
 
 **Deployment & Evaluation** <br>
-- *Siyuan Feng, Guo Xu* <br>
+- *Guo Xu* <br>
+
+### 💫Product & Ecosystem
+> System architecture design, project management, community engagement
+- *Chengyue Zhao, Shukai Yang, Huijie Wang, Yongjian Shen, Jialu Li, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan*
 
 ### 🦾Data Curation
 > Data collection, quality check
@@ -34,10 +38,6 @@ We list all authors according to their contributions below. Thank all the author
 ### 📖Manuscript Writing
 > Manuscript design, writing and revising
 - *Jisong Cai, Chonghao Sima*
-
-### 💫Product & Ecosystem
-> System architecture design, project management, community engagement
-- *Chengyue Zhao, Shukai Yang, Huijie Wang, Yongjian Shen, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan, Jialu Li*
 
 ### 🛠️Hardware & Software Development
 > Hardware design, embedded software development
