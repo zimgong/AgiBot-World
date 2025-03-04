@@ -49,6 +49,7 @@ We list all authors according to their contributions below. Thank all the author
 
 **Acknowledgement**
 
-```markdown
+<pre style="white-space: pre-wrap;">
 For contributors marked with *, they are not listed in the author list due to number restrictions but still remain actual contributors to the project.
-```
+</pre>
+
