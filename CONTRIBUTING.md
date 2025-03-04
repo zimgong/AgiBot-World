@@ -19,7 +19,7 @@ We list all authors according to their contributions below. Thank all the author
 - *Yao Mu, Li Chen, Yan Ding* <br>
   
 **Pre-training** <br>
-- *Xindong He, Jianheng Song, Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
+- *Jianheng Song, Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
 
 **Post-training** <br>
 - *Ziyu Xiong, Xu Huang, Dafeng Wei* <br>
