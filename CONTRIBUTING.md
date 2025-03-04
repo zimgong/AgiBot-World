@@ -31,13 +31,13 @@ We list all authors according to their contributions below. Thank all the author
 > System architecture design, project management, community engagement
 - *Chengyue Zhao, Shukai Yang, Huijie Wang, Yongjian Shen, Jialu Li, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan*
 
-### 🦾Data Curation
-> Data collection, quality check
-- *Cheng Ruan, Jia Zeng, Lei Yang*
-
 ### 📖Manuscript Writing
 > Manuscript design, writing and revising
 - *Jisong Cai, Chonghao Sima*
+
+### 🦾Data Curation
+> Data collection, quality check
+- *Cheng Ruan, Jia Zeng, Lei Yang*
 
 ### 🛠️Hardware & Software Development
 > Hardware design, embedded software development
