@@ -59,11 +59,8 @@ Follow the steps below to quickly explore and get an overview of AgiBot World wi
 # Installation
 conda create -n agibotworld python=3.10 -y
 conda activate agibotworld
-git clone https://github.com/huggingface/lerobot.git
-cd lerobot
-pip install -e .
+pip install git+https://github.com/huggingface/lerobot@59e275743499c5811a9f651a8947e8f881c4058c
 pip install matplotlib
-cd ..
 git clone https://github.com/OpenDriveLab/AgiBot-World.git
 cd AgiBot-World
 
