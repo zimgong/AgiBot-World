@@ -16,7 +16,7 @@ We list all authors according to their contributions below. Thank all the author
 > Technical roadmap, model training and evaluation<br>
 
 **Roadmap and Methodology** <br>
-- *Yao Mu, Li Chen, Yan Ding* <br>
+- *Yao Mu, Li Chen, Yan Ding, Yixuan Pan\** <br>
   
 **Pre-training** <br>
 - *Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
@@ -25,7 +25,7 @@ We list all authors according to their contributions below. Thank all the author
 - *Ziyu Xiong, Xu Huang, Dafeng Wei* <br>
 
 **Deployment & Evaluation** <br>
-- *Guo Xu* <br>
+- *Guo Xu, Shu Jiang\*, Chengshi Shi\** <br>
 
 ### 💫Product & Ecosystem
 > System architecture design, project management, community engagement
@@ -33,7 +33,7 @@ We list all authors according to their contributions below. Thank all the author
 
 ### 📖Manuscript Writing
 > Manuscript design, writing and revising
-- *Jisong Cai, Chonghao Sima*
+- *Jisong Cai, Chonghao Sima, Shenyuan Gao\**
 
 ### 🦾Data Curation
 > Data collection, quality check
@@ -47,3 +47,11 @@ We list all authors according to their contributions below. Thank all the author
 > Research direction, project coordination, technical advising
 - *Maoqing Yao, Yu Qiao, Hongyang Li, Jianlan Luo, Jiangmiao Pang, Bin Zhao, Junchi Yan, Ping Luo*
 
+
+<br><br><br>
+
+**Acknowledgement**
+
+<pre style="white-space: pre-wrap;">
+For contributors marked with *, they are not listed in the author list due to number restrictions but still remain actual contributors to the project.
+</pre>
