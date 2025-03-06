@@ -13,14 +13,14 @@
 ### 🌟 Core Contributors
 > Whole process of data collection, algorithm, experiment and writing
 
- - *[Qingwen Bu](https://scholar.google.com/citations?user=-JCRysgAAAAJ&hl=zh-CN), [Guanghui Ren](https://scholar.google.com/citations?hl=zh-CN&user=oqN1dA8AAAAJ), Chiming Liu, [Chengen Xie](https://scholar.google.com/citations?hl=zh-CN&user=-Sk1x_gAAAAJ), [Modi Shi](https://github.com/ModiShi), Xindong He, Jianheng Song, [Yuxiang Lu](https://scholar.google.com/citations?hl=zh-CN&user=7m-TOp8AAAAJ), Siyuan Feng* 
+ - *[Qingwen Bu](https://scholar.google.com/citations?user=-JCRysgAAAAJ&hl=zh-CN), [Guanghui Ren](https://scholar.google.com/citations?hl=zh-CN&user=oqN1dA8AAAAJ), [Chiming Liu](https://scholar.google.co.uk/citations?user=VuL0zQkAAAAJ&hl=en), [Chengen Xie](https://scholar.google.com/citations?hl=zh-CN&user=-Sk1x_gAAAAJ), [Modi Shi](https://github.com/ModiShi), [Xindong He](https://scholar.google.com/citations?view_op=list_works&hl=en&user=YAuiW5MAAAAJ), [Jianheng Song](https://github.com/JianJianHeng), [Yuxiang Lu](https://scholar.google.com/citations?hl=zh-CN&user=7m-TOp8AAAAJ), [Siyuan Feng](https://github.com/Eralien)* 
 
 
 ### 🌏 Algorithm
 > Technical roadmap, model training and evaluation<br>
 
 **Roadmap and Methodology** <br>
-- *Yao Mu, Li Chen, Yan Ding, Yixuan Pan\** <br>
+- *[Yao Mu](https://yaomarkmu.github.io/), [Li Chen](https://ilnehc.github.io/), [Yan Ding](https://yding25.com/), [Yixuan Pan](https://lzpyx.github.io/)\** <br>
   
 **Pre-training** <br>
 - *Yi Liu, Yuxin Jiang, Xiuqi Cui* <br>
@@ -33,11 +33,11 @@
 
 ### 💫 Product & Ecosystem
 > System architecture design, project management, community engagement
-- *Chengyue Zhao, Shukai Yang, Huijie Wang, Yongjian Shen, Jialu Li, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan*
+- *Chengyue Zhao, Shukai Yang, [Huijie Wang](https://faikit.github.io/), Yongjian Shen, Jialu Li, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan*
 
 ### 📖 Manuscript Preparation
 > Manuscript design, writing and revising
-- *Jisong Cai, Chonghao Sima, Shenyuan Gao\**
+- *[Jisong Cai](https://scholar.google.com/citations?hl=zh-CN&user=dTrpq94AAAAJ), [Chonghao Sima](https://scholar.google.com/citations?user=dgYJ6esAAAAJ), [Shenyuan Gao](https://scholar.google.com/citations?user=hZtOnecAAAAJ)\**
 
 ### 🦾 Data Curation
 > Data collection, quality check
@@ -45,8 +45,8 @@
 
 ### 🛠️ Hardware & Software Development
 > Hardware design, embedded software development
-- *Yuehan Niu, Cheng Jing, Mingkang Shi, Chi Zhang, Qinglin Zhang, Cunbiao Yang, Wenhao Wang, Xuan Hu*
+- *Yuehan Niu, Cheng Jing, Mingkang Shi, Chi Zhang, Qinglin Zhang, Cunbiao Yang, [Wenhao Wang](https://hao-starrr.github.io/), [Xuan Hu](https://github.com/huxuan)*
 
 ### 🚀 Project Co-lead and Advising
 > Research direction, project coordination, technical advising
-- *Maoqing Yao, Yu Qiao, Hongyang Li, Jianlan Luo, Jiangmiao Pang, Bin Zhao, Junchi Yan, Ping Luo*
+- *Maoqing Yao, [Yu Qiao](https://scholar.google.co.uk/citations?user=gFtI-8QAAAAJ&hl=en&oi=ao), [Hongyang Li](https://scholar.google.co.uk/citations?user=Hfrih1EAAAAJ&hl=en&oi=ao), [Jianlan Luo](https://scholar.google.co.uk/citations?user=SJoRNbYAAAAJ&hl=en&oi=ao), [Jiangmiao Pang](https://scholar.google.co.uk/citations?user=ssSfKpAAAAAJ&hl=en&oi=ao), [Bin Zhao](https://scholar.google.com/citations?user=DQB0hqwAAAAJ), [Junchi Yan](https://scholar.google.co.uk/citations?user=ga230VoAAAAJ&hl=en&oi=ao), [Ping Luo](https://scholar.google.co.uk/citations?hl=en&user=aXdjxb4AAAAJ)*
