@@ -2,7 +2,7 @@
 
 ![agibot_world](https://github.com/user-attachments/assets/df64b543-db82-41ee-adda-799970e8a198)
 
-[[Research Blog on March 10]](https://opendrivelab.com/blog/agibot-world/)
+<a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog on March 10</a>
 
 [![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) [![License](https://img.shields.io/badge/License-CC_%20_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -12,7 +12,7 @@
 
 - **`[2024/12/30]`** 🤖 Agibot World Alpha released.
 - **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
-- **`[2025/2/26]`** Agibot World Beta released.
+- **`[2025/02/26]`** Agibot World Beta released.
 
 ## TODO List 📅 <a name="todolist"></a>
 
