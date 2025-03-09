@@ -8,6 +8,22 @@
 
 </div>
 
+## News📰 <a name="news"></a>
+
+- **`[2024/12/30]`** 🤖 Agibot World Alpha released.
+- **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
+- **`[2025/2/26]`** Agibot World Beta released.
+
+## TODO List 📅 <a name="todolist"></a>
+
+- [x] **AgiBot World Alpha**
+- [ ] **AgiBot World Beta** (expected Q1 2025)
+  - [x] ~1,000,000 trajectories of high-quality robot data 
+  - [ ] ACT、DP3、OpenVLA and some other baseline models
+- [ ] **AgiBot World Colosseo** (expected 2025)
+  - [ ] A comprehensive platform with toolkits including teleoperation, training and inference.
+- [ ] **2025 AgiBot World Challenge** (expected 2025)
+
 ## Key Features 🔑 <a name="keyfeatures"></a>
 
 - **1 million+** trajectories from 100 robots.
@@ -34,11 +50,7 @@
   </table>
 </div>
 
-## News📰 <a name="news"></a>
 
-- **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
-- **`[2024/12/30]`** 🤖 Agibot World Alpha released.
-- **`[2025/2/26]`** Agibot World Beta released.
 
 ## Table of Contents
 
@@ -129,15 +141,7 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
-## TODO List 📅 <a name="todolist"></a>
 
-- [x] **AgiBot World Alpha**
-- [ ] **AgiBot World Beta** (expected Q1 2025)
-  - [x] ~1,000,000 trajectories of high-quality robot data 
-  - [ ] ACT、DP3、OpenVLA and some other baseline models
-- [ ] **AgiBot World Colosseo** (expected 2025)
-  - [ ] A comprehensive platform with toolkits including teleoperation, training and inference.
-- [ ] **2025 AgiBot World Challenge** (expected 2025)
 
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
