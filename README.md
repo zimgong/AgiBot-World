@@ -2,7 +2,7 @@
 
 ![agibot_world](https://github.com/user-attachments/assets/df64b543-db82-41ee-adda-799970e8a198)
 
-<a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog on March 10</a>
+<a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog on March 10</a> | <a href="https://opendrivelab.com/assets/file/AgiBot_World_Colosseo.pdf" target="_blank">Technical Report</a>
 
 [![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) [![License](https://img.shields.io/badge/License-CC_%20_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
