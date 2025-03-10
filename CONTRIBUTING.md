@@ -11,7 +11,7 @@
 - We encourage all future endeavors from the community!
 
 ### 🌟 Core Contributors
-> Whole process of data collection, algorithm, experiment and writing
+> The whole span of project, including data collection, algorithm, experiment, and writing
 
  - *[Qingwen Bu](https://scholar.google.com/citations?user=-JCRysgAAAAJ&hl=zh-CN), [Guanghui Ren](https://scholar.google.com/citations?hl=zh-CN&user=oqN1dA8AAAAJ), [Chiming Liu](https://scholar.google.co.uk/citations?user=VuL0zQkAAAAJ&hl=en), [Chengen Xie](https://scholar.google.com/citations?hl=zh-CN&user=-Sk1x_gAAAAJ), [Modi Shi](https://github.com/ModiShi), [Xindong He](https://scholar.google.com/citations?view_op=list_works&hl=en&user=YAuiW5MAAAAJ), [Jianheng Song](https://github.com/JianJianHeng), [Yuxiang Lu](https://scholar.google.com/citations?hl=zh-CN&user=7m-TOp8AAAAJ), [Siyuan Feng](https://github.com/Eralien)* 
 
@@ -29,14 +29,14 @@
 - *Ziyu Xiong, Xu Huang, Dafeng Wei* <br>
 
 **Deployment & Evaluation** <br>
-- *Guo Xu, Shu Jiang\*, Chengshi Shi\** <br>
+- *Guo Xu, [Shu Jiang](https://scholar.google.com.hk/citations?user=oPZpk1oAAAAJ&hl=zh-CN)\*, Chengshi Shi\** <br>
 
 ### 💫 Product & Ecosystem
 > System architecture design, project management, community engagement
 - *Chengyue Zhao, Shukai Yang, [Huijie Wang](https://faikit.github.io/), Yongjian Shen, Jialu Li, Jiaqi Zhao, Jianchao Zhu, Jiaqi Shan*
 
 ### 📖 Manuscript Preparation
-> Manuscript design, writing and revising
+> Manuscript outline, writing and revising
 - *[Jisong Cai](https://scholar.google.com/citations?hl=zh-CN&user=dTrpq94AAAAJ), [Chonghao Sima](https://scholar.google.com/citations?user=dgYJ6esAAAAJ), [Shenyuan Gao](https://scholar.google.com/citations?user=hZtOnecAAAAJ)\**
 
 ### 🦾 Data Curation
