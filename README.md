@@ -10,16 +10,19 @@
 
 ## News📰 <a name="news"></a>
 
-- **`[2024/12/30]`** 🤖 Agibot World Alpha released.
-- **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
+- **`[2025/03/10]`** 📄 Research blog and technical report released.
 - **`[2025/02/26]`** Agibot World Beta released.
+- **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
+- **`[2024/12/30]`** 🤖 Agibot World Alpha released.
 
 ## TODO List 📅 <a name="todolist"></a>
 
 - [x] **AgiBot World Alpha**
-- [ ] **AgiBot World Beta** (expected Q1 2025)
+- [x] **AgiBot World Beta** (expected Q1 2025)
   - [x] ~1,000,000 trajectories of high-quality robot data 
-  - [ ] ACT、DP3、OpenVLA and some other baseline models
+- [ ] **AgiBot World Foundation Model: GO-1** (expected Q2 2025)
+  - [ ] Training & inference code
+  - [ ] Pretrained model checkpoint
 - [ ] **AgiBot World Colosseo** (expected 2025)
   - [ ] A comprehensive platform with toolkits including teleoperation, training and inference.
 - [ ] **2025 AgiBot World Challenge** (expected 2025)
