@@ -2,7 +2,7 @@
 
 ![agibot_world](https://github.com/user-attachments/assets/df64b543-db82-41ee-adda-799970e8a198)
 
-<a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog on March 10</a> | <a href="https://opendrivelab.com/assets/file/AgiBot_World_Colosseo.pdf" target="_blank">Technical Report</a>
+<a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog on March 10</a> | <a href="https://arxiv.org/abs/2503.06669" target="_blank">Technical Report</a>
 
 <a href="https://arxiv.org/abs/2503.06669"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a> [![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) [![License](https://img.shields.io/badge/License-CC_%20_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -10,7 +10,7 @@
 
 ## News📰 <a name="news"></a>
 
-- **`[2025/03/10]`** 📄 <a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog</a> and <a href="https://opendrivelab.com/assets/file/AgiBot_World_Colosseo.pdf" target="_blank">Technical Report</a> released.
+- **`[2025/03/10]`** 📄 <a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog</a> and <a href="https://arxiv.org/abs/2503.06669" target="_blank">Technical Report</a> released.
 - **`[2025/02/26]`** Agibot World Beta released.
 - **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
 - **`[2024/12/30]`** 🤖 Agibot World Alpha released.
