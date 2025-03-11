@@ -4,7 +4,7 @@
 
 <a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog on March 10</a> | <a href="https://opendrivelab.com/assets/file/AgiBot_World_Colosseo.pdf" target="_blank">Technical Report</a>
 
-[![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) [![License](https://img.shields.io/badge/License-CC_%20_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+<a href="https://arxiv.org/abs/2503.06669"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a> [![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) [![License](https://img.shields.io/badge/License-CC_%20_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 </div>
 
@@ -166,11 +166,12 @@ All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creat
 }
 ```
 
+- In alphabetical order by surname:
 ```BibTeX
-@article{bu2025agibotworld,
-  title={AgiBot World Colosseo: Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems},
-  author={Bu, Qingwen and Ren, Guanghui and Liu, Chiming and Xie, Chengen and Shi, Modi and He, Xindong and Song, Jianheng and Lu, Yuxiang and Feng, Siyuan and Mu, Yao and Zhao, Chengyue and Yang, Shukai and Xiong, Ziyu and Huang, Xu and Wei, Dafeng and Xu, Guo and Liu, Yi and Jiang, Yuxin and Cui, Xiuqi and Ruan, Cheng and Zeng, Jia and Yang, Lei and Chen, Li and Ding, Yan and Cai, Jisong and Sima, Chonghao and Wang, Huijie and Shen, Yongjian and Li, Jialu and Zhao, Jiaqi and Zhu, Jianchao and Shan, Jiaqi and Niu, Yuehan and Jing, Cheng and Shi, Mingkang and Zhang, Chi and Zhang, Qinglin and Yang, Cunbiao and Wang, Wenhao and Hu, Xuan and Luo, Ping and Yan, Junchi and Zhao, Bin and Pang, Jiangmiao and Luo, Jianlan and Li, Hongyang and Qiao, Yu and Yao, Maoqing},
-  journal={arXiv preprint arXiv:25xx.xxx-to-appear},
+@article{contributors2025agibotworld,
+  title={{AgiBot World Colosseo: A Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems}},
+  author={AgiBot-World-Contributors and Bu, Qingwen and Cai, Jisong and Chen, Li and Cui, Xiuqi and Ding, Yan and Feng, Siyuan and Gao, Shenyuan and He, Xindong and Huang, Xu and Jiang, Shu and Jiang, Yuxin and Jing, Cheng and Li, Hongyang and Li, Jialu and Liu, Chiming and Liu, Yi and Lu, Yuxiang and Luo, Jianlan and Luo, Ping and Mu, Yao and Niu, Yuehan and Pan, Yixuan and Pang, Jiangmiao and Qiao, Yu and Ren, Guanghui and Ruan, Cheng and Shan, Jiaqi and Shen, Yongjian and Shi, Chengshi and Shi, Mingkang and Shi, Modi and Sima, Chonghao and Song, Jianheng and Wang, Huijie and Wang, Wenhao and Wei, Dafeng and Xie, Chengen and Xu, Guo and Yan, Junchi and Yang, Cunbiao and Yang, Lei and Yang, Shukai and Yao, Maoqing and Zeng, Jia and Zhang, Chi and Zhang, Qinglin and Zhao, Bin and Zhao, Chengyue and Zhao, Jiaqi and Zhu, Jianchao},
+  journal={arXiv preprint arXiv:2503.06669},
   year={2025}
 }
 ```
