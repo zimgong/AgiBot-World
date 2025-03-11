@@ -7,7 +7,7 @@
 `AgiBot-World` is a joint effort from multiple and diverse research teams. 
 
 - Here we list all contributors towards constructing this platform from 2024 and onwards.
-- **Note that** names marked with `*` do not appear in the [technical report (to appear)]() and yet are much appreciated as the project evolves.
+- **Note that** names marked with `*` do not appear in the [technical report](https://arxiv.org/abs/2503.06669) and yet are much appreciated as the project evolves.
 - We encourage all future endeavors from the community!
 
 ### 🌟 Core Contributors
