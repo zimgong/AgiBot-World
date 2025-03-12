@@ -102,7 +102,11 @@ git clone https://github.com/OpenDriveLab/AgiBot-World.git
 cd AgiBot-World
 ```
 
-Our project is built upon the [lerobot library](https://github.com/huggingface/lerobot) (dataset `v2.0`), please follow their [installation instructions](https://github.com/huggingface/lerobot?tab=readme-ov-file#installation).
+Our project is built upon the [lerobot library](https://github.com/huggingface/lerobot) (**dataset `v2.0`, commit 59e2757**), 
+install lerobot through
+```bash
+pip install git+https://github.com/huggingface/lerobot@59e275743499c5811a9f651a8947e8f881c4058c
+```
 
 #### How to Get Started with Our AgiBot World Data <a name="preaparedata"></a>
 
