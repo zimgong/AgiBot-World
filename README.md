@@ -157,19 +157,8 @@ Leveraging the simplicity of [LeRobot Dataset](https://github.com/huggingface/le
 
 All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
 
-- Please consider citing our work either way below if it helps your research.
+- Please consider citing our work if it helps your research.
 - For the full authorship and detailed contributions, please refer to [contributions](CONTRIBUTING.md).
-
-
-```BibTeX
-@misc{contributors2024agibotworldrepo,
-  title={AgiBot World Colosseo},
-  author={AgiBot World Colosseo contributors},
-  howpublished={\url{https://github.com/OpenDriveLab/AgiBot-World}},
-  year={2024}
-}
-```
-
 - In alphabetical order by surname:
 ```BibTeX
 @article{contributors2025agibotworld,
