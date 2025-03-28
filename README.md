@@ -5,13 +5,21 @@
 <a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog on March 10</a> | <a href="https://arxiv.org/abs/2503.06669" target="_blank">Technical Report</a>
 
 <a href="https://arxiv.org/abs/2503.06669"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a> [![Static Badge](https://img.shields.io/badge/Download-grey?style=plastic&logo=huggingface&logoColor=yellow)](https://huggingface.co/agibot-world) [![Static Badge](https://img.shields.io/badge/Project%20Page-blue?style=plastic)](https://agibot-world.com) [![License](https://img.shields.io/badge/License-CC_%20_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+<a href="https://docs.google.com/spreadsheets/d/1GWMFHYo3UJADS7kkScoJ5ObbQfAFasPuaeC7TJUr1Cc/edit?usp=sharing"><img src="https://img.shields.io/badge/Dataset-Overview-brightgreen?logo=googleforms" alt="Document Badge"></a>
 
 </div>
+
+AgiBot World Colosseo is a full-stack large-scale robot learning platform curated for advancing bimanual manipulation in scalable and intelligent embodied systems. It is accompanied by foundation models, benchmarks, and an ecosystem to democratize access to high-quality robot data for the academic community and the industry, paving the path towards the "ImageNet Moment" for Embodied AI.
+
+We have released:
+- **<a href="https://docs.google.com/spreadsheets/d/1GWMFHYo3UJADS7kkScoJ5ObbQfAFasPuaeC7TJUr1Cc/edit?usp=sharing" target="_blank">Task Catalog</a>:** Reference sheet outlining the tasks in our dataset, including robot end-effector types, sample action-text descriptions and more
+- **<a href="https://huggingface.co/datasets/agibot-world/AgiBotWorld-Beta" target="_blank">AgiBot World Beta</a>:** Our complete dataset featuring 1,003,672 trajectories (~43.8T)
+- **<a href="https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha" target="_blank">AgiBot World Alpha</a>:** A curated subset of AgiBot World Beta, containing 92,214 trajectories (~8.5T)
 
 ## News📰 <a name="news"></a>
 
 - **`[2025/03/10]`** 📄 <a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog</a> and <a href="https://arxiv.org/abs/2503.06669" target="_blank">Technical Report</a> released.
-- **`[2025/02/26]`** Agibot World Beta released.
+- **`[2025/03/01]`** Agibot World Beta released.
 - **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
 - **`[2024/12/30]`** 🤖 Agibot World Alpha released.
 
