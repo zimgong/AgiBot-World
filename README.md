@@ -169,9 +169,9 @@ All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creat
 - For the full authorship and detailed contributions, please refer to [contributions](CONTRIBUTING.md).
 - In alphabetical order by surname:
 ```BibTeX
-@article{contributors2025agibotworld,
-  title={AgiBot World Colosseo: A Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems},
-  author={AgiBot-World-Contributors and Bu, Qingwen and Cai, Jisong and Chen, Li and Cui, Xiuqi and Ding, Yan and Feng, Siyuan and Gao, Shenyuan and He, Xindong and Hu, Xuan and Huang, Xu and Jiang, Shu and Jiang, Yuxin and Jing, Cheng and Li, Hongyang and Li, Jialu and Liu, Chiming and Liu, Yi and Lu, Yuxiang and Luo, Jianlan and Luo, Ping and Mu, Yao and Niu, Yuehan and Pan, Yixuan and Pang, Jiangmiao and Qiao, Yu and Ren, Guanghui and Ruan, Cheng and Shan, Jiaqi and Shen, Yongjian and Shi, Chengshi and Shi, Mingkang and Shi, Modi and Sima, Chonghao and Song, Jianheng and Wang, Huijie and Wang, Wenhao and Wei, Dafeng and Xie, Chengen and Xu, Guo and Yan, Junchi and Yang, Cunbiao and Yang, Lei and Yang, Shukai and Yao, Maoqing and Zeng, Jia and Zhang, Chi and Zhang, Qinglin and Zhao, Bin and Zhao, Chengyue and Zhao, Jiaqi and Zhu, Jianchao},
+@article{bu2025agibot,
+  title={Agibot world colosseo: A large-scale manipulation platform for scalable and intelligent embodied systems},
+  author={Bu, Qingwen and Cai, Jisong and Chen, Li and Cui, Xiuqi and Ding, Yan and Feng, Siyuan and Gao, Shenyuan and He, Xindong and Huang, Xu and Jiang, Shu and others},
   journal={arXiv preprint arXiv:2503.06669},
   year={2025}
 }
