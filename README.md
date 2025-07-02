@@ -18,6 +18,9 @@ We have released:
 
 ## News📰 <a name="news"></a>
 
+> [!IMPORTANT]
+> 🌟 Stay up to date at [opendrivelab.com](https://opendrivelab.com/#news)!
+
 - **`[2025/03/10]`** 📄 <a href="https://opendrivelab.com/blog/agibot-world/" target="_blank">Research Blog</a> and <a href="https://arxiv.org/abs/2503.06669" target="_blank">Technical Report</a> released.
 - **`[2025/03/01]`** Agibot World Beta released.
 - **`[2025/01/03]`** <span style="color: #B91C1C; font-weight: bold;">Agibot World Alpha Sample Dataset released.</span>
