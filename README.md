@@ -178,4 +178,12 @@ All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creat
   journal={arXiv preprint arXiv:2503.06669},
   year={2025}
 }
+
+@inproceedings{bu2025agibot,
+  title={Agibot world colosseo: A large-scale manipulation platform for scalable and intelligent embodied systems},
+  author={Bu, Qingwen and Cai, Jisong and Chen, Li and Cui, Xiuqi and Ding, Yan and Feng, Siyuan and He, Xindong and Huang, Xu and others},
+  booktitle={2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year={2025},
+  organization={IEEE}
+}
 ```
