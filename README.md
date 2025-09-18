@@ -308,6 +308,7 @@ We can then run the LIBERO evaluation script to query the server, see the [LIBER
 We will provide more examples of fine-tuning and running inference with GO-1 models on real robots and simulation platforms.
 
 Currently we have:
+- [Genie Studio](https://genie.agibot.com/geniestudio): AgiBot G1 with out-of-the-box GO-1 model plus integrated data collection, fine-tuning, and deployment pipeline.
 - [AgileX](evaluate/agilex/README.md): AgileX Cobot Magic (Aloha)
 - [LIBERO](evaluate/libero/README.md): LIBERO Simulation (Franka)
 
