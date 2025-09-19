@@ -118,7 +118,8 @@ conda activate go1
 ```
 
 3. Install dependencies:
-> This project is built on [LeRobot](https://github.com/huggingface/lerobot) (**dataset `v2.1`, commit `2b71789`**)
+> This project is built on [LeRobot](https://github.com/huggingface/lerobot) (**dataset `v2.1`, commit `2b71789`**)  
+> ⚡️ Our environment has been tested with **CUDA 12.4**.
 ```bash
 pip install -e .
 pip install --no-build-isolation flash-attn==2.4.2
