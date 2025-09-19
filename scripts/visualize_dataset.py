@@ -1,4 +1,4 @@
-""" 
+"""
 This script is adapted from the Hugging Face 🤗 LeRobot project:
 https://github.com/huggingface/lerobot
 
@@ -50,10 +50,10 @@ def to_hwc_uint8_numpy(chw_float32_torch: torch.Tensor) -> np.ndarray:
         min_depth = 0.4
         max_depth = 3
         clipped_depth = torch.clamp(chw_float32_torch, min=min_depth, max=max_depth)
-        normalized_depth = (clipped_depth-min_depth) / (max_depth-min_depth)
+        normalized_depth = (clipped_depth - min_depth) / (max_depth - min_depth)
         depth_image = np.sqrt(normalized_depth.squeeze().cpu().numpy())
 
-        colormap = plt.get_cmap('jet')
+        colormap = plt.get_cmap("jet")
         colored_depth_image = colormap(depth_image)
         hwc_uint8_numpy = (colored_depth_image[:, :, :3] * 255).astype(np.uint8)
     else:
@@ -159,9 +159,8 @@ def main():
     parser.add_argument(
         "--episode-index",
         type=int,
-        nargs="*",
-        default=None,
-        help="Episode indices to visualize (e.g. `0 1 5 6` to load episodes of index 0, 1, 5 and 6). By default loads all episodes.",
+        default=0,
+        help="Episode index to visualize.",
     )
     parser.add_argument(
         "--dataset-path",
@@ -227,9 +226,10 @@ def main():
     root = f"{kwargs.pop('dataset_path')}/{repo_id}"
 
     logging.info("Loading dataset")
-    dataset = LeRobotDataset(repo_id, root=root, local_files_only=True)
+    dataset = LeRobotDataset(repo_id, root=root)
 
     visualize_dataset(dataset, **vars(args))
+
 
 if __name__ == "__main__":
     main()
