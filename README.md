@@ -230,7 +230,7 @@ RUNNAME=<YOUR_RUNNAME> bash go1/shell/train.sh /path/to/your/config
 Checkpoints will be saved in `experiment/<YOUR_RUNNAME>` and logs will be saved in `experiment/<YOUR_RUNNAME>/logs`.
 
 **Notes:**
-- We also provide a [debugging shell](go1/shell/train_dev.sh) which can run on a single RTX4090.
+- We also provide a [debugging shell](go1/shell/train_dev.sh) which can run on a single RTX4090. It also set `DEBUG_MODE` to true for faster init. 
 - We do not need to precompute the normalization statistics for the training data, as LeRobot will compute them when loading the dataset. The statistics will be saved to `experiment/<YOUR_RUNNAME>/dataset_stats.json`.
 - We set action chunk size and control frequency input as 30 in GO-1 pre-training, as our AgiBot World dataset is collected at 30Hz. We change them to 10 in LIBERO fine-tuning, as the LIBERO dataset is collected at 10Hz. You can change them accordingly in the config file.
 
