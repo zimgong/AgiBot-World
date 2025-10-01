@@ -253,7 +253,9 @@ def build_go1_model(dataset_args, model_args, training_args, space_args):
 
     # Load model state dict from given model safetensor directory
     logger.info("Loading GO1Model...")
-    config = GO1ModelConfig.from_pretrained(model_args.model_name_or_path)
+    # config = GO1ModelConfig.from_pretrained(model_args.model_name_or_path)
+    config = GO1ModelConfig()
+    config.llm_config.architectures = ["InternLM2ForCausalLMGO1"]
     config.vision_config.drop_path_rate = model_args.drop_path_rate
     config.llm_config.attn_implementation = "flash_attention_2"  # for InternLM
     config.pad_token_id = tokenizer.pad_token_id
