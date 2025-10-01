@@ -69,16 +69,16 @@ class InternVisionConfig(PretrainedConfig):
         qkv_bias=True,
 
         # Air
-        # hidden_size=1024,
-        # num_attention_heads=16,
-        # intermediate_size=4096,
-        # num_hidden_layers=24,
+        hidden_size=1024,
+        num_attention_heads=16,
+        intermediate_size=4096,
+        num_hidden_layers=24,
 
         # Air Small
-        hidden_size=512,
-        num_attention_heads=8,
-        intermediate_size=2048,
-        num_hidden_layers=12,
+        # hidden_size=512,
+        # num_attention_heads=8,
+        # intermediate_size=2048,
+        # num_hidden_layers=12,
 
         qk_normalization=False,
         use_flash_attn=True,
