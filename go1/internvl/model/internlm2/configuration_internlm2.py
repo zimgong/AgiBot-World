@@ -77,25 +77,35 @@ class InternLM2Config(PretrainedConfig):
 
     def __init__(  # pylint: disable=W0102
         self,
-        vocab_size=103168,
-        hidden_size=4096,
-        intermediate_size=11008,
-        num_hidden_layers=32,
-        num_attention_heads=32,
-        num_key_value_heads=None,
+        vocab_size=92553,
+
+        # Air
+        # hidden_size=2048,
+        # intermediate_size=8192,
+        # num_hidden_layers=24,
+        # num_attention_heads=16,
+        # num_key_value_heads=8,
+
+        # Air Small
+        hidden_size=1024,
+        intermediate_size=4096,
+        num_hidden_layers=12,
+        num_attention_heads=8,
+        num_key_value_heads=4,
+
         hidden_act="silu",
-        max_position_embeddings=2048,
+        max_position_embeddings=32768,
         initializer_range=0.02,
-        rms_norm_eps=1e-6,
+        rms_norm_eps=1e-05,
         use_cache=True,
         pad_token_id=0,
         bos_token_id=1,
         eos_token_id=2,
         tie_word_embeddings=False,
-        bias=True,
-        rope_theta=10000,
-        rope_scaling=None,
-        attn_implementation="eager",
+        bias=False,
+        rope_theta=1000000,
+        rope_scaling={"type": "dynamic", "factor": 2.0},
+        attn_implementation="flash_attention_2",
         **kwargs,
     ):
         self.vocab_size = vocab_size
