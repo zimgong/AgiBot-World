@@ -2,7 +2,7 @@ import os
 from typing import Any, Dict, List
 
 import torch
-from lerobot.common.datasets.lerobot_dataset import LeRobotDataset, LeRobotDatasetMetadata, MultiLeRobotDataset
+from lerobot.datasets.lerobot_dataset import LeRobotDataset, LeRobotDatasetMetadata, MultiLeRobotDataset
 from PIL import Image
 
 from go1.internvl.train.constants import IMG_END_TOKEN
