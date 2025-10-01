@@ -169,3 +169,5 @@ tmp*
 
 evaluate/libero/results/
 evaluate/libero/videos/
+
+wandb/
