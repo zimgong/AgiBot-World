@@ -178,8 +178,8 @@ def build_ae_config(
     }
 
     action_config_dict["input_hidden_size"] = llm_config_dict["hidden_size"]
-    action_config_dict["hidden_size"] = llm_config_dict["hidden_size"] // 2
-    action_config_dict["intermediate_size"] = llm_config_dict["intermediate_size"] // 2
+    action_config_dict["hidden_size"] = llm_config_dict["hidden_size"]
+    action_config_dict["intermediate_size"] = llm_config_dict["intermediate_size"]
     action_config_dict["model_type"] = "internlm2_300m"
     action_config_dict["use_flash_attn"] = False
 
