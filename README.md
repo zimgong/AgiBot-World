@@ -312,6 +312,7 @@ Currently we have:
 - [Genie Studio](https://genie.agibot.com/geniestudio): AgiBot G1 with out-of-the-box GO-1 model plus integrated data collection, fine-tuning, and deployment pipeline.
 - [AgileX](evaluate/agilex/README.md): AgileX Cobot Magic (Aloha)
 - [LIBERO](evaluate/libero/README.md): LIBERO Simulation (Franka)
+- [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin/tree/main/policy/GO1): RoboTwin Simulation (Aloha)
 
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
