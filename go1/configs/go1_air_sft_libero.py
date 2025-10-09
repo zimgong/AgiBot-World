@@ -16,7 +16,7 @@ class DatasetArguments(BaseDatasetArguments):
     dataset_type: Optional[str] = field(default="lerobot")
     data_root_dir: Optional[List[str]] = field(
         default_factory=lambda: [
-            "/path/to/your/libero/dataset",
+            "/home/zimu.gong/.cache/huggingface/hub/datasets--HuggingFaceVLA--libero/snapshots/86958911c0f959db2bbbdb107eb3e17c5f9c798e",
         ],
     )
     transforms: Optional[List[str]] = field(default_factory=lambda: [dict(type="Normalize")])
@@ -36,10 +36,10 @@ class GOModelArguments(BaseModelArguments):
 class GOTrainingArguments(TrainingArguments):
     output_dir: str = field(default=f"experiment/{RUNNAME}")
     overwrite_output_dir: bool = field(default=True)
-    dataloader_num_workers: int = field(default=20 if not DEBUG_MODE else 0)
+    dataloader_num_workers: int = field(default=64 if not DEBUG_MODE else 0)
     bf16: bool = field(default=True)
     num_train_epochs: float = field(default=100.0)
-    per_device_train_batch_size: int = field(default=16 if not DEBUG_MODE else 2)
+    per_device_train_batch_size: int = field(default=64 if not DEBUG_MODE else 2)
     gradient_accumulation_steps: int = field(default=1)
     learning_rate: float = field(default=2e-5)
     weight_decay: float = field(default=0.01)
@@ -49,10 +49,10 @@ class GOTrainingArguments(TrainingArguments):
     deepspeed: str = field(default="go1/zero_stage1_config.json")
 
     save_strategy: str = field(default="steps")
-    save_steps: int = field(default=10000)
+    save_steps: int = field(default=5000)
     save_total_limit: int = field(default=100)
     logging_steps: int = field(default=10)
-    report_to: str = field(default="tensorboard")
+    report_to: str = field(default="wandb")
 
 
 @dataclass
@@ -61,10 +61,10 @@ class SpaceArguments(BaseSpaceArguments):
     action_dim: int = field(default=7)
     space_repack: dict = field(
         default_factory=lambda: {
-            "state": "state",
-            "action": "actions",
-            "cam_head_color": "image",
-            "cam_hand_left_color": "wrist_image",
+            "state": "observation.state",
+            "action": "action",
+            "cam_head_color": "observation.images.image",
+            "cam_hand_left_color": "observation.images.image2",
             "final_prompt": "task",
         }
     )
