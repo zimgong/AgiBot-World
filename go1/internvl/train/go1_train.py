@@ -223,6 +223,25 @@ def build_meanflow_config(model_args: BaseModelArguments) -> Dict:
     return meanflow_config
 
 
+def build_flow_sde_config(model_args: BaseModelArguments) -> Dict:
+    """Build Flow SDE configuration from model arguments."""
+    if not model_args.flow_sde_use:
+        return None
+    
+    flow_sde_config = {
+        "use": model_args.flow_sde_use,
+        "mode": model_args.flow_sde_mode,
+        "s_churn": model_args.flow_sde_s_churn,
+        "eps": model_args.flow_sde_eps,
+        "learn_sigma": model_args.flow_sde_learn_sigma,
+        "sigma_init": model_args.flow_sde_sigma_init,
+        "clip_t": model_args.flow_sde_clip_t,
+        "return_logprob": model_args.flow_sde_return_logprob,
+        "logprob_sigma_only": model_args.flow_sde_logprob_sigma_only,
+    }
+    return flow_sde_config
+
+
 def get_config_args(cfg_path: str):
     file_path = Path(cfg_path)
     sys.path.insert(0, str(file_path.parent))
@@ -300,6 +319,10 @@ def build_go1_model(dataset_args, model_args, training_args, space_args):
     meanflow_config = build_meanflow_config(model_args)
     config.decoder_type = meanflow_config["decoder_type"]
     config.dispersive = meanflow_config["dispersive"]
+    
+    # Add Flow SDE configuration
+    flow_sde_config = build_flow_sde_config(model_args)
+    config.flow_sde = flow_sde_config
 
     # Add latent planner related config
     if model_args.latent_planning:

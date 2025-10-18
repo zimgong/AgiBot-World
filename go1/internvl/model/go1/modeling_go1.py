@@ -152,7 +152,20 @@ class GO1Model(PreTrainedModel):
         #   use=False, mode="churn", s_churn=0.7, eps=1e-4,
         #   learn_sigma=False, sigma_init=1.0, clip_t=1e-5, return_logprob=False
         # )
-        self.flow_sde_cfg = getattr(config, "flow_sde", {}) or {}
+        if hasattr(config, "flow_sde") and config.flow_sde is not None:
+            self.flow_sde_cfg = config.flow_sde
+        else:
+            self.flow_sde_cfg = dict(
+                use=bool(getattr(config, "flow_sde_use", False)),
+                mode=str(getattr(config, "flow_sde_mode", "churn")),
+                s_churn=float(getattr(config, "flow_sde_s_churn", 0.7)),
+                eps=float(getattr(config, "flow_sde_eps", 1e-4)),
+                learn_sigma=bool(getattr(config, "flow_sde_learn_sigma", False)),
+                sigma_init=float(getattr(config, "flow_sde_sigma_init", 0.1)),
+                clip_t=float(getattr(config, "flow_sde_clip_t", 1e-5)),
+                return_logprob=bool(getattr(config, "flow_sde_return_logprob", True)),
+                logprob_sigma_only=bool(getattr(config, "flow_sde_logprob_sigma_only", True)),
+            )
         self.flow_sde_use = bool(self.flow_sde_cfg.get("use", False))
         self.flow_sde_return_logprob = bool(self.flow_sde_cfg.get("return_logprob", False))
         self.flow_sde_clip_t = float(self.flow_sde_cfg.get("clip_t", 1e-5))
@@ -811,7 +824,7 @@ class GO1Model(PreTrainedModel):
         z = torch.randn((B, self.action_chunk_size, self.action_dim), device=device, dtype=dtype)
         logprob = None
         if return_logprob:
-            logprob = torch.zeros((B,), device=device, dtype=dtype)
+            logprob = torch.zeros((B,), device=device, dtype=torch.float32)
 
         self.noise_scheduler_sample.set_timesteps(self.num_inference_timesteps)
         raw_ts = self.noise_scheduler_sample.timesteps.to(device).float()  # descending ints
@@ -824,7 +837,8 @@ class GO1Model(PreTrainedModel):
             dt = torch.tensor(1.0, device=device, dtype=z.dtype)
             sigma = self._sigma_t(t)
             eps = torch.randn_like(z)
-            z = (z + vtilde * dt + sigma * torch.sqrt(dt) * eps).to(dtype)
+            mu = z + vtilde * dt           # <-- add this
+            z = (mu + sigma * torch.sqrt(dt) * eps).to(dtype)
             if return_logprob:
                 # SAC-style logprob: gradients only to learnable noise (sigma), not to main model (v_theta)
                 if bool(self.flow_sde_cfg.get("logprob_sigma_only", True)):
@@ -840,7 +854,7 @@ class GO1Model(PreTrainedModel):
                     quad = (z - mu).pow(2).sum(dim=(1,2)) / (var.squeeze(1) + 1e-12)
                     const = z.new_tensor(self.action_chunk_size * self.action_dim, dtype=dtype)
                     logprob += -0.5 * (const * torch.log(2 * torch.pi * var.squeeze(1) + 1e-12) + quad)
-            return z, logprob
+            return z, (logprob.to(self.torch_dtype) if return_logprob else None)
 
         t_max = max(raw_ts.max().item(), 1.0)
         t_norm = (t_max - raw_ts) / t_max  # ascending in [0,1]
@@ -878,8 +892,57 @@ class GO1Model(PreTrainedModel):
                     quad = (z - mu).pow(2).sum(dim=(1,2)) / (var.squeeze(1) + 1e-12)
                     const = z.new_tensor(self.action_chunk_size * self.action_dim, dtype=dtype)
                     logprob += -0.5 * (const * torch.log(2 * torch.pi * var.squeeze(1) + 1e-12) + quad)
-        return z, logprob
+        return z, (logprob.to(self.torch_dtype) if return_logprob else None)
 
+    def meanflow_sde_sample(
+        self,
+        state: torch.Tensor,                                   # [B, state_dim]
+        vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]],
+        attention_mask: torch.Tensor,                          # [B, vlm_len]
+        ctrl_freqs: torch.Tensor,                              # [B, 1]
+        return_logprob: bool = False,
+    ) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
+        """
+        MF-SDE sampler (boundary trick) using u_theta with r=t to approximate v_theta.
+        Returns (actions, logprob) if return_logprob=True, else (actions, None).
+        """
+        device = state.device
+        dtype  = self.torch_dtype
+        B = state.shape[0]
+        z = torch.randn((B, self.action_chunk_size, self.action_dim), device=device, dtype=dtype)
+        logprob = torch.zeros((B,), device=device, dtype=torch.float32) if return_logprob else None
+
+        self.noise_scheduler_sample.set_timesteps(self.num_inference_timesteps)
+        raw_ts = self.noise_scheduler_sample.timesteps.to(device).float()
+        t_max  = max(raw_ts.max().item(), 1.0)
+        t_grid = torch.cat([(t_max - raw_ts)/t_max, raw_ts.new_tensor([1.0])], dim=0) if raw_ts.numel()>0 else torch.tensor([0.0,1.0], device=device)
+
+        for i in range(t_grid.numel()-1):
+            t_cur, t_next = t_grid[i].item(), t_grid[i+1].item()
+            dt = torch.tensor(t_next - t_cur, device=device, dtype=z.dtype)
+            t_b = torch.full((B,1), t_cur, device=device, dtype=torch.float32)
+
+            # v_hat ≈ u(z, r=t, t)  (r==t boundary)
+            v_hat = self._u_theta(z, t_b, t_b, state, ctrl_freqs, attention_mask, vlm_key_values_downsample)
+            vtilde = self._fm_sde_drift(z, t_b, v_hat)
+
+            sigma = self._sigma_t(t_b)
+            eps = torch.randn_like(z)
+            mu = z + vtilde * dt
+            z  = (mu + sigma * torch.sqrt(dt.clamp_min(0)) * eps).to(dtype)
+
+            if return_logprob:
+                D = self.action_chunk_size * self.action_dim
+                if bool(self.flow_sde_cfg.get("logprob_sigma_only", True)):
+                    log_det = D * torch.log(sigma.squeeze(1) * torch.sqrt(dt + 1e-12))
+                    nll_eps = 0.5 * (D * math.log(2*math.pi) + (eps.float()**2).sum(dim=(1,2)))
+                    logprob += -(nll_eps + log_det.float())
+                else:
+                    var = (sigma ** 2) * dt
+                    quad = (z - mu).float().pow(2).sum(dim=(1,2)) / (var.squeeze(1).float() + 1e-12)
+                    const = float(D)
+                    logprob += -0.5 * (const * torch.log(2*math.pi*var.squeeze(1).float() + 1e-12) + quad)
+        return z, (logprob.to(self.torch_dtype) if return_logprob else None)
 
     def common_process(
         self,
@@ -1070,7 +1133,17 @@ class GO1Model(PreTrainedModel):
             if self.decoder_type == "DDPM":
                 action_logits = self.condition_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
             elif self.decoder_type == "mean_flow":
-                action_logits = self.meanflow_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
+                use_sde = self.flow_sde_use or bool(kwargs.get("sampler", "") == "sde")
+                want_logp = self.flow_sde_return_logprob or bool(kwargs.get("return_logprob", False))
+                if use_sde:
+                    action_logits, logprob = self.meanflow_sde_sample(
+                        state, vlm_key_values_downsample, attention_mask, ctrl_freqs,
+                        return_logprob=want_logp
+                    )
+                    action_logprob = logprob
+                else:
+                    action_logits = self.meanflow_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
+                    action_logprob = None
             elif self.decoder_type == "flow_matching":
                 # ODE (deterministic) or SDE (stochastic) based on config or runtime kwarg
                 use_sde = self.flow_sde_use or bool(kwargs.get("sampler", "") == "sde")
