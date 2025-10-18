@@ -39,6 +39,8 @@ class ActionModelOutputWithPast(ModelOutput):
     action_loss: Optional[torch.FloatTensor] = None
     action_logits: Optional[torch.FloatTensor] = None
     action_gts: Optional[torch.FloatTensor] = None
+    # NEW: for RL/SDE sampling (sum over time and dims per batch item)
+    action_logprob: Optional[torch.FloatTensor] = None
 
 
 class TimestepEmbedder(nn.Module):
@@ -143,6 +145,22 @@ class GO1Model(PreTrainedModel):
         )
         self.dispersive_cfg = getattr(config, "dispersive", None)
         self.use_dispersive = bool(self.dispersive_cfg and self.dispersive_cfg.get("use", False))
+        
+        # NEW: FM-SDE sampler config (inference-time only by default)
+        # Example:
+        # flow_sde = dict(
+        #   use=False, mode="churn", s_churn=0.7, eps=1e-4,
+        #   learn_sigma=False, sigma_init=1.0, clip_t=1e-5, return_logprob=False
+        # )
+        self.flow_sde_cfg = getattr(config, "flow_sde", {}) or {}
+        self.flow_sde_use = bool(self.flow_sde_cfg.get("use", False))
+        self.flow_sde_return_logprob = bool(self.flow_sde_cfg.get("return_logprob", False))
+        self.flow_sde_clip_t = float(self.flow_sde_cfg.get("clip_t", 1e-5))
+        # Optional learnable scalar multiplier for sigma(t). No new layers/heads.
+        self._sigma_learnable: Optional[nn.Parameter] = None
+        if bool(self.flow_sde_cfg.get("learn_sigma", False)):
+            init = float(self.flow_sde_cfg.get("sigma_init", 1.0))
+            self._sigma_learnable = nn.Parameter(torch.tensor(init, dtype=torch.float32))
         
         # Optional warning for MeanFlow + FlashAttention compatibility
         if self.decoder_type == "mean_flow" and hasattr(config, "action_config") and config.action_config.attn_implementation == "flash_attention_2":
@@ -421,6 +439,38 @@ class GO1Model(PreTrainedModel):
             attention_mask=attention_mask,
             vlm_key_values_downsample=vlm_key_values_downsample,
         )
+
+    # === FM-SDE utils ===
+    def _sigma_t(self, t: torch.Tensor) -> torch.Tensor:
+        """
+        Sigma schedule in latent action space. If learnable is enabled, we
+        multiply the schedule by softplus(parameter) to keep it >= 0.
+        """
+        cfg = self.flow_sde_cfg
+        mode = (cfg.get("mode", "churn") or "churn").lower()  # "churn" | "fixed"
+        eps = float(cfg.get("eps", 1e-4))
+        s_churn = float(cfg.get("s_churn", 0.0))
+        if mode == "fixed":
+            base = torch.ones_like(t)
+        else:
+            # user-proposed churn-like schedule: sqrt(1 - t/(t+eps))
+            base = torch.sqrt(torch.clamp(1.0 - t / (t + eps), min=0.0))
+        scale = s_churn
+        if self._sigma_learnable is not None:
+            scale = scale * F.softplus(self._sigma_learnable)  # >= 0
+        return (scale * base).to(t.dtype)
+
+    def _fm_sde_drift(self, z: torch.Tensor, t: torch.Tensor, v_pred: torch.Tensor) -> torch.Tensor:
+        """
+        Marginal-preserving SDE drift:
+          v_tilde = v + 0.5 * sigma(t)^2 * ((t * v - z) / (1 - t))
+        (Uses the score–velocity identity for linear FM.)
+        """
+        # clamp 1 - t for numerical stability near t=1
+        one_minus_t = torch.clamp(1.0 - t, min=self.flow_sde_clip_t)
+        sigma = self._sigma_t(t)                       # [B,1]
+        score = (t * v_pred - z) / one_minus_t        # broadcast over [B,H,D]
+        return v_pred + 0.5 * (sigma ** 2) * score
 
     def calc_action_meanflow_loss(
         self,
@@ -741,6 +791,95 @@ class GO1Model(PreTrainedModel):
             z = (z + dt * v_pred).to(dtype)
         return z
 
+    def flowmatch_sde_sample(
+        self,
+        state: torch.Tensor,                                   # [B, state_dim]
+        vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]],
+        attention_mask: torch.Tensor,                          # [B, vlm_len]
+        ctrl_freqs: torch.Tensor,                              # [B, 1]
+        return_logprob: bool = False,
+    ) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
+        """
+        FM-SDE sampler (Euler–Maruyama) on the same time grid as ODE sampling.
+        Returns (actions, logprob) if return_logprob=True, else (actions, None).
+        Each step is a Gaussian transition -> SAC-style log-prob accumulation.
+        """
+        device = state.device
+        dtype  = self.torch_dtype
+        B = state.shape[0]
+        # init from prior in latent action space
+        z = torch.randn((B, self.action_chunk_size, self.action_dim), device=device, dtype=dtype)
+        logprob = None
+        if return_logprob:
+            logprob = torch.zeros((B,), device=device, dtype=dtype)
+
+        self.noise_scheduler_sample.set_timesteps(self.num_inference_timesteps)
+        raw_ts = self.noise_scheduler_sample.timesteps.to(device).float()  # descending ints
+        # normalized ascending grid in [0,1]
+        if raw_ts.numel() == 0:
+            t = torch.zeros((B, 1), device=device, dtype=torch.float32)
+            v = self._v_theta(z, t, state, ctrl_freqs, attention_mask, vlm_key_values_downsample)
+            vtilde = self._fm_sde_drift(z, t, v)
+            # single step to t=1
+            dt = torch.tensor(1.0, device=device, dtype=z.dtype)
+            sigma = self._sigma_t(t)
+            eps = torch.randn_like(z)
+            z = (z + vtilde * dt + sigma * torch.sqrt(dt) * eps).to(dtype)
+            if return_logprob:
+                # SAC-style logprob: gradients only to learnable noise (sigma), not to main model (v_theta)
+                if bool(self.flow_sde_cfg.get("logprob_sigma_only", True)):
+                    # epsilon-based logprob: depends only on sigma (and dt)
+                    # z_new = mu + sigma*sqrt(dt)*eps  ==>  logN(eps;0,I) - sum_j log(sigma*sqrt(dt))
+                    D = self.action_chunk_size * self.action_dim
+                    log_det = D * torch.log(sigma.squeeze(1) * torch.sqrt(dt.clamp_min(0) + 1e-12))
+                    nll_eps = 0.5 * (D * torch.log(2 * torch.pi) + (eps * eps).sum(dim=(1, 2)))
+                    logprob += -(nll_eps + log_det)
+                else:
+                    # fallback: classic formula (still yields zero grad to mu for unsquashed Gaussians)
+                    var = (sigma ** 2) * dt  # [B,1]
+                    quad = (z - mu).pow(2).sum(dim=(1,2)) / (var.squeeze(1) + 1e-12)
+                    const = z.new_tensor(self.action_chunk_size * self.action_dim, dtype=dtype)
+                    logprob += -0.5 * (const * torch.log(2 * torch.pi * var.squeeze(1) + 1e-12) + quad)
+            return z, logprob
+
+        t_max = max(raw_ts.max().item(), 1.0)
+        t_norm = (t_max - raw_ts) / t_max  # ascending in [0,1]
+        t_grid = torch.cat([t_norm, t_norm.new_tensor([1.0])], dim=0)
+        K = raw_ts.numel()
+        for i in range(K):
+            t_cur  = t_grid[i].item()
+            t_next = t_grid[i + 1].item()
+            dt = torch.tensor(t_next - t_cur, device=device, dtype=z.dtype)
+            t_b = torch.full((B, 1), t_cur, device=device, dtype=torch.float32)
+
+            # predict velocity and convert to marginal-preserving SDE drift
+            v = self._v_theta(z, t_b, state, ctrl_freqs, attention_mask, vlm_key_values_downsample)
+            vtilde = self._fm_sde_drift(z, t_b, v)
+
+            # Gaussian transition
+            sigma = self._sigma_t(t_b)  # [B,1]
+            eps = torch.randn_like(z)
+            noise = sigma * torch.sqrt(dt.clamp_min(0)) * eps
+            mu = z + vtilde * dt
+            z = (mu + noise).to(dtype)
+
+            if return_logprob:
+                # SAC-style logprob: gradients only to learnable noise (sigma), not to main model (v_theta)
+                if bool(self.flow_sde_cfg.get("logprob_sigma_only", True)):
+                    # epsilon-based logprob: depends only on sigma (and dt)
+                    # z_new = mu + sigma*sqrt(dt)*eps  ==>  logN(eps;0,I) - sum_j log(sigma*sqrt(dt))
+                    D = self.action_chunk_size * self.action_dim
+                    log_det = D * torch.log(sigma.squeeze(1) * torch.sqrt(dt.clamp_min(0) + 1e-12))
+                    nll_eps = 0.5 * (D * torch.log(2 * torch.pi) + (eps * eps).sum(dim=(1, 2)))
+                    logprob += -(nll_eps + log_det)
+                else:
+                    # fallback: classic formula (still yields zero grad to mu for unsquashed Gaussians)
+                    var = (sigma ** 2) * dt  # [B,1]
+                    quad = (z - mu).pow(2).sum(dim=(1,2)) / (var.squeeze(1) + 1e-12)
+                    const = z.new_tensor(self.action_chunk_size * self.action_dim, dtype=dtype)
+                    logprob += -0.5 * (const * torch.log(2 * torch.pi * var.squeeze(1) + 1e-12) + quad)
+        return z, logprob
+
 
     def common_process(
         self,
@@ -933,7 +1072,20 @@ class GO1Model(PreTrainedModel):
             elif self.decoder_type == "mean_flow":
                 action_logits = self.meanflow_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
             elif self.decoder_type == "flow_matching":
-                action_logits = self.flowmatch_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
+                # ODE (deterministic) or SDE (stochastic) based on config or runtime kwarg
+                use_sde = self.flow_sde_use or bool(kwargs.get("sampler", "") == "sde")
+                want_logp = self.flow_sde_return_logprob or bool(kwargs.get("return_logprob", False))
+                if use_sde:
+                    action_logits, logprob = self.flowmatch_sde_sample(
+                        state, vlm_key_values_downsample, attention_mask, ctrl_freqs,
+                        return_logprob=want_logp,
+                    )
+                    action_logprob = logprob
+                else:
+                    action_logits = self.flowmatch_sample(
+                        state, vlm_key_values_downsample, attention_mask, ctrl_freqs
+                    )
+                    action_logprob = None
 
         loss = action_loss
 
@@ -945,4 +1097,5 @@ class GO1Model(PreTrainedModel):
             action_loss=action_loss,
             action_logits=action_logits,
             action_gts=action_gts,
+            action_logprob=locals().get("action_logprob", None),
         )

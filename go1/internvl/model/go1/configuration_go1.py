@@ -104,6 +104,12 @@ class GO1ModelConfig(PretrainedConfig):
         # MeanFlow decoder configuration
         self.decoder_type = decoder_type
         self.dispersive = dispersive
+        
+        # NEW: FM-SDE sampler (inference-time)
+        # Example:
+        # flow_sde = dict(use=False, mode="churn", s_churn=0.7, eps=1e-4,
+        #                 learn_sigma=False, sigma_init=1.0, clip_t=1e-5, return_logprob=False)
+        self.flow_sde = kwargs.get("flow_sde", None)
 
     def to_dict(self):
         """
@@ -135,4 +141,5 @@ class GO1ModelConfig(PretrainedConfig):
         output["action_chunk_size"] = self.action_chunk_size
         output["decoder_type"] = self.decoder_type
         output["dispersive"] = self.dispersive
+        output["flow_sde"] = self.flow_sde
         return output

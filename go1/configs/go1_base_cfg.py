@@ -151,6 +151,47 @@ class BaseModelArguments:
         default_factory=lambda: ["T", "R", "Cond"], 
         metadata={"help": "Target embeddings for dispersive regularization. Default is ['T', 'R', 'Cond']."}
     )
+    
+    # Flow Matching SDE configuration for stochastic sampling
+    # These parameters enable SDE (Stochastic Differential Equation) sampling
+    # which provides stochastic exploration while maintaining the same marginal
+    # probability distribution as the original ODE (Ordinary Differential Equation)
+    flow_sde_use: bool = field(
+        default=False, 
+        metadata={"help": "Enable SDE sampling for Flow Matching. Provides stochastic exploration while maintaining marginal probability distribution. Default is False."}
+    )
+    flow_sde_mode: Literal["churn", "fixed"] = field(
+        default="churn", 
+        metadata={"help": "Noise schedule mode for SDE: 'churn' for churn-style schedule or 'fixed' for constant noise. Default is 'churn'."}
+    )
+    flow_sde_s_churn: float = field(
+        default=0.7, 
+        metadata={"help": "Churn strength for SDE noise schedule. Higher values increase stochasticity. Default is 0.7."}
+    )
+    flow_sde_eps: float = field(
+        default=1e-4, 
+        metadata={"help": "Epsilon for numerical stability in SDE noise schedule. Default is 1e-4."}
+    )
+    flow_sde_learn_sigma: bool = field(
+        default=False, 
+        metadata={"help": "Enable learnable noise amplitude for SDE. Can be trained via RL to adapt to environment. Default is False."}
+    )
+    flow_sde_sigma_init: float = field(
+        default=0.1, 
+        metadata={"help": "Initial value for learnable sigma parameter in SDE. Default is 0.1."}
+    )
+    flow_sde_clip_t: float = field(
+        default=1e-5, 
+        metadata={"help": "Clip value for (1-t) to ensure numerical stability in SDE. Default is 1e-5."}
+    )
+    flow_sde_return_logprob: bool = field(
+        default=True, 
+        metadata={"help": "Return log probabilities for SDE sampling. Required for SAC-style RL algorithms. Default is True."}
+    )
+    flow_sde_logprob_sigma_only: bool = field(
+        default=True, 
+        metadata={"help": "Compute log probabilities using epsilon-based formulation to ensure gradients only flow to learnable noise (sigma), not to main model (v_theta). This is optimal for SAC-style RL training. Default is True."}
+    )
 
 
 @dataclass
