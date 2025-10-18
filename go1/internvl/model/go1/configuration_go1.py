@@ -1,4 +1,5 @@
 import copy
+from typing import Optional, Dict, Any, Literal
 
 from transformers.configuration_utils import PretrainedConfig
 from transformers.utils import logging
@@ -36,6 +37,8 @@ class GO1ModelConfig(PretrainedConfig):
         max_dynamic_patch=6,
         latent_planning=False,
         norm=False,
+        decoder_type: Literal["DDPM", "mean_flow"] = "DDPM",
+        dispersive: Optional[Dict[str, Any]] = None,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -97,6 +100,10 @@ class GO1ModelConfig(PretrainedConfig):
         self.norm = norm
         self.latent_planning = latent_planning
         self.action_chunk_size = self.action_config.action_chunk_size
+        
+        # MeanFlow decoder configuration
+        self.decoder_type = decoder_type
+        self.dispersive = dispersive
 
     def to_dict(self):
         """
@@ -126,4 +133,6 @@ class GO1ModelConfig(PretrainedConfig):
         output["norm"] = self.norm
         output["latent_planning"] = self.latent_planning
         output["action_chunk_size"] = self.action_chunk_size
+        output["decoder_type"] = self.decoder_type
+        output["dispersive"] = self.dispersive
         return output

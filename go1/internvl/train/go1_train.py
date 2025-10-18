@@ -203,6 +203,26 @@ def build_noise_scheduler_config(model_args: BaseModelArguments) -> Dict:
     return noise_scheduler_config
 
 
+def build_meanflow_config(model_args: BaseModelArguments) -> Dict:
+    """Build MeanFlow configuration from model arguments."""
+    dispersive_config = None
+    if model_args.dispersive_use:
+        dispersive_config = {
+            "use": model_args.dispersive_use,
+            "weight": model_args.dispersive_weight,
+            "loss_type": model_args.dispersive_loss_type,
+            "temperature": model_args.dispersive_temperature,
+            "margin": model_args.dispersive_margin,
+            "target": model_args.dispersive_target,
+        }
+    
+    meanflow_config = {
+        "decoder_type": model_args.decoder_type,
+        "dispersive": dispersive_config,
+    }
+    return meanflow_config
+
+
 def get_config_args(cfg_path: str):
     file_path = Path(cfg_path)
     sys.path.insert(0, str(file_path.parent))
@@ -275,6 +295,11 @@ def build_go1_model(dataset_args, model_args, training_args, space_args):
     noise_scheduler_config = build_noise_scheduler_config(model_args)
     config.noise_scheduler_config = noise_scheduler_config
     config.norm = any(t["type"] == "Normalize" for t in dataset_args.transforms)
+    
+    # Add MeanFlow configuration
+    meanflow_config = build_meanflow_config(model_args)
+    config.decoder_type = meanflow_config["decoder_type"]
+    config.dispersive = meanflow_config["dispersive"]
 
     # Add latent planner related config
     if model_args.latent_planning:

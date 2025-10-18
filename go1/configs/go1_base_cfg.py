@@ -121,6 +121,36 @@ class BaseModelArguments:
         default="imagenet", metadata={"help": "The normalization type for the image. Default is imagenet."}
     )
     action_chunk_size: int = field(default=30, metadata={"help": "The size of action chunks. Default is 30."})
+    
+    # MeanFlow decoder configuration
+    decoder_type: Literal["DDPM", "mean_flow"] = field(
+        default="DDPM", 
+        metadata={"help": "Decoder type: 'DDPM' for diffusion or 'mean_flow' for MeanFlow. Default is 'DDPM'."}
+    )
+    dispersive_use: bool = field(
+        default=False, 
+        metadata={"help": "Whether to use dispersive regularization for MeanFlow. Default is False."}
+    )
+    dispersive_weight: float = field(
+        default=0.5, 
+        metadata={"help": "Weight for dispersive regularization. Default is 0.5."}
+    )
+    dispersive_loss_type: Literal["infonce_cos", "hinge", "cov"] = field(
+        default="infonce_cos", 
+        metadata={"help": "Type of dispersive loss: 'infonce_cos', 'hinge', or 'cov'. Default is 'infonce_cos'."}
+    )
+    dispersive_temperature: float = field(
+        default=0.3, 
+        metadata={"help": "Temperature for InfoNCE cosine dispersive loss. Default is 0.3."}
+    )
+    dispersive_margin: float = field(
+        default=0.5, 
+        metadata={"help": "Margin for hinge dispersive loss. Default is 0.5."}
+    )
+    dispersive_target: List[str] = field(
+        default_factory=lambda: ["T", "R", "Cond"], 
+        metadata={"help": "Target embeddings for dispersive regularization. Default is ['T', 'R', 'Cond']."}
+    )
 
 
 @dataclass

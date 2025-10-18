@@ -23,7 +23,7 @@ classifiers = [
 dependencies = [
     "accelerate",
     "bitsandbytes",
-    "datasets==3.6.0",
+    "datasets",
     "decord",
     "deepspeed==0.15.4",
     "draccus",
@@ -33,7 +33,6 @@ dependencies = [
     "huggingface_hub",
     "imageio",
     "json_numpy",
-    "lerobot @ git+https://github.com/huggingface/lerobot.git@2b71789e15c35418b1ccecbceb81f4a598bfd883",
     "matplotlib",
     "numpy<2",
     "opencv-python",

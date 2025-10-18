@@ -1,7 +1,7 @@
 import math
 import warnings
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union, Literal
 
 import torch
 import torch.nn.functional as F
@@ -10,6 +10,7 @@ from diffusers.schedulers.scheduling_ddpm import DDPMScheduler
 from diffusers.schedulers.scheduling_dpmsolver_multistep import DPMSolverMultistepScheduler
 from timm.models.vision_transformer import Mlp
 from torch import nn
+from torch.func import jvp as jvp_func
 from transformers.modeling_outputs import CausalLMOutputWithPast, ModelOutput
 from transformers.modeling_utils import PreTrainedModel
 from transformers.utils import logging
@@ -136,6 +137,15 @@ class GO1Model(PreTrainedModel):
         self.llm_arch_name = config.llm_config.architectures[0]
         self.torch_dtype = torch_dtype
 
+        # MeanFlow decoder configuration
+        self.decoder_type: Literal["DDPM", "mean_flow"] = getattr(config, "decoder_type", "DDPM")
+        self.dispersive_cfg = getattr(config, "dispersive", None)
+        self.use_dispersive = bool(self.dispersive_cfg and self.dispersive_cfg.get("use", False))
+        
+        # Optional warning for MeanFlow + FlashAttention compatibility
+        if self.decoder_type == "mean_flow" and hasattr(config, "action_config") and config.action_config.attn_implementation == "flash_attention_2":
+            logger.warning("MeanFlow + JVP may conflict with FlashAttention. Consider setting attn_implementation='eager' for training.")
+
         self.max_new_tokens = 1024
         self.img_context_token_id = getattr(config, "img_context_token_id", 92546)
         self.pad_token_id = config.pad_token_id
@@ -230,6 +240,9 @@ class GO1Model(PreTrainedModel):
         )
         self.time_embedder = TimestepEmbedder(action_hidden_size, dtype=self.torch_dtype)
         self.freq_embedder = TimestepEmbedder(action_hidden_size, dtype=self.torch_dtype)
+        
+        # MeanFlow: extra time embedder for end-time r
+        self.time_embedder_r = TimestepEmbedder(action_hidden_size, dtype=self.torch_dtype)
 
         self.state_adaptor = nn.Sequential(
             nn.Linear(
@@ -352,6 +365,181 @@ class GO1Model(PreTrainedModel):
         loss = F.mse_loss(action_logits, target)
         return loss
 
+    # === MeanFlow: utilities ===
+    def _embed_T_R_F(self, t: torch.Tensor, r: torch.Tensor, ctrl_freqs: torch.Tensor):
+        """
+        Returns (t_token, r_token, f_token) with shape [B, 1, C] each.
+        t and r should be floats in [0, 1].
+        """
+        t_token = self.time_embedder(t)           # [B, 1, C]
+        r_token = self.time_embedder_r(r)        # [B, 1, C]
+        f_token = self.freq_embedder(ctrl_freqs) # [B, 1, C]
+        return t_token, r_token, f_token
+
+    def _u_theta(self, z_t: torch.Tensor, t: torch.Tensor, r: torch.Tensor,
+                 state: torch.Tensor, ctrl_freqs: torch.Tensor,
+                 attention_mask: torch.Tensor,
+                 vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]]):
+        """
+        u_theta network head. Returns predicted average velocity over the action chunk.
+        Shapes:
+          z_t: [B, H, action_dim]  (trajectory at time t)
+          t,r: [B, 1]  in [0,1]
+        """
+        # Adapters
+        state_traj = self.state_adaptor(state)      # [B, 1, C]
+        action_traj = self.action_adaptor(z_t)      # [B, H, C]
+
+        # Tokens
+        t_tok, r_tok, f_tok = self._embed_T_R_F(t, r, ctrl_freqs)
+
+        # Pack to action model: [T, R, F, State, Action...]
+        state_action_trajs_w_tfps = torch.cat([t_tok, r_tok, f_tok, state_traj, action_traj], dim=1)
+
+        # Forward through Action Expert (decoder)
+        outputs = self.action_model(
+            state_action_traj=state_action_trajs_w_tfps,
+            attention_mask=attention_mask,
+            vlm_key_values=vlm_key_values_downsample,
+        )
+        hidden = outputs[0]
+        action_h = hidden[:, -self.action_chunk_size:, ...]
+        # Project to action_dim: interpret as u_theta (average velocity)
+        u_pred = self.final_layer(action_h)        # [B, H, action_dim]
+        return u_pred
+
+    def calc_action_meanflow_loss(
+        self,
+        action_gts: torch.Tensor,                         # [B, H, action_dim]
+        state: torch.Tensor,                              # [B, state_dim]
+        ctrl_freqs: torch.Tensor,                         # [B, 1] ints ok
+        attention_mask: torch.Tensor,                     # [B, vlm_len] (bool)
+        vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]],
+    ):
+        """
+        Implements Eq. (MeanFlow identity):
+          u(z_t,r,t) = v(z_t,t) - (t - r) * d/dt u(z_t,r,t),
+        with d/dt u computed by JVP along direction (v, 1) w.r.t inputs (z_t, t).
+        v = a - e under linear interpolation z_t = (1 - t) * e + t * a.
+        """
+        B, H, D = action_gts.shape
+        device = action_gts.device
+        dtype  = action_gts.dtype
+
+        # Sample Gaussian noise in action space, and times t<r
+        e = torch.randn_like(action_gts)                         # [B, H, D]
+        t = torch.rand(B, 1, device=device, dtype=torch.float32) # [B,1] in [0,1]
+        # r ~ Uniform(t, 1]
+        r = t + (1.0 - t) * torch.rand_like(t)
+
+        # Linear interpolation (make t broadcast across H and D)
+        t_b = t.view(B, 1, 1).to(e.dtype)                       # [B,1,1]
+        z_t = (1.0 - t_b) * e + t_b * action_gts                # [B, H, D]
+        v   = action_gts - e                                    # [B, H, D]
+
+        # closure for JVP: f(z, t) -> u_theta(z,t,r,cond)
+        def f_func(z_var, t_var):
+            return self._u_theta(
+                z_t=z_var, t=t_var, r=r, state=state,
+                ctrl_freqs=ctrl_freqs,
+                attention_mask=attention_mask,
+                vlm_key_values_downsample=vlm_key_values_downsample,
+            )
+
+        # Compute u_pred and its total derivative wrt time (directional derivative):
+        # dudt = ∂u/∂z ⋅ v + ∂u/∂t ⋅ 1  (r is held constant)
+        # NOTE: if your environment mixes bf16/flash-attn, you may want to temporarily disable autocast.
+        u_pred, dudt = jvp_func(f_func, (z_t, t), (v, torch.ones_like(t)))
+
+        # MeanFlow target from identity
+        coeff = (t - r).view(B, 1, 1).to(dudt.dtype)            # [B,1,1]
+        target = v.to(dudt.dtype) - coeff * dudt
+
+        # L2 loss on average velocity
+        mf_loss = F.mse_loss(u_pred, target)
+
+        # Optional dispersive regularization on embeddings (see DM1 Fig.2)
+        disp_loss = torch.tensor(0.0, device=device, dtype=dtype)
+        if self.use_dispersive:
+            disp_loss = self.calc_dispersive_loss(state, ctrl_freqs, t, r)
+
+        return mf_loss, u_pred, disp_loss
+
+    # === MeanFlow: dispersive losses (lightweight variants) ===
+    def _pairwise_cos(self, x: torch.Tensor) -> torch.Tensor:
+        x = F.normalize(x, dim=-1)
+        return x @ x.T  # [B,B]
+
+    def _pairwise_l2(self, x: torch.Tensor) -> torch.Tensor:
+        # squared L2 distances
+        xx = (x * x).sum(-1, keepdim=True)
+        d2 = xx + xx.T - 2.0 * (x @ x.T)
+        return d2.clamp_min_(0)
+
+    def _hinge_disp(self, h: torch.Tensor, margin: float) -> torch.Tensor:
+        # encourage ||h_i - h_j||_2 >= margin
+        d = torch.sqrt(self._pairwise_l2(h) + 1e-9)
+        B = d.shape[0]
+        mask = ~torch.eye(B, dtype=torch.bool, device=h.device)
+        return F.relu(margin - d[mask]).mean()
+
+    def _cov_disp(self, h: torch.Tensor, min_var: float = 1e-3, var_w: float = 0.0) -> torch.Tensor:
+        # decorrelate features & enforce minimum variance per dim
+        h = h - h.mean(dim=0, keepdim=True)
+        C = (h.T @ h) / (h.shape[0] - 1 + 1e-6)  # [C,C]
+        offdiag = C - torch.diag(torch.diag(C))
+        cov_loss = (offdiag**2).mean()
+        if var_w > 0.0:
+            var = torch.diag(C)
+            cov_loss = cov_loss + var_w * F.relu(min_var - var).mean()
+        return cov_loss
+
+    def _infonce_cos(self, h: torch.Tensor, tau: float) -> torch.Tensor:
+        # InfoNCE-style "all-negatives" cosine separation (no positives): push apart batch.
+        # logits_ij = cos_ij / tau ; remove diagonal; maximize normalization entropy.
+        cos = self._pairwise_cos(h)  # [B,B]
+        B = cos.shape[0]
+        mask = ~torch.eye(B, dtype=torch.bool, device=h.device)
+        logits = cos[mask].view(B, B-1) / max(tau, 1e-6)
+        # maximize uniformity: minimize logsumexp (equivalent to spreading directions)
+        # use -logsumexp as proxy since there is no designated positive.
+        return -torch.logsumexp(logits, dim=-1).mean()
+
+    def calc_dispersive_loss(self, state: torch.Tensor, ctrl_freqs: torch.Tensor,
+                             t: torch.Tensor, r: torch.Tensor) -> torch.Tensor:
+        """Apply dispersive regularization to embeddings of T, R and Cond (state+freq)."""
+        cfg = self.dispersive_cfg or {}
+        loss_type = cfg.get("loss_type", "infonce_cos")
+        weight    = float(cfg.get("weight", 0.0))
+        if weight <= 0.0:
+            return torch.tensor(0.0, device=state.device, dtype=state.dtype)
+
+        targets = cfg.get("target", ["T","R","Cond"])
+        tau     = float(cfg.get("temperature", 0.3))
+        margin  = float(cfg.get("margin", 0.3))
+        var_w   = float(cfg.get("variance_weight", 0.0))
+
+        # Build the three embeddings (shape [B, 1, C] -> [B, C])
+        t_h, r_h, f_h = self._embed_T_R_F(t, r, ctrl_freqs)
+        cond_h = (self.state_adaptor(state) + f_h)[:, 0, :]  # [B,C]
+        t_h = t_h[:,0,:]; r_h = r_h[:,0,:]
+
+        def disp(h):
+            if loss_type == "hinge":
+                return self._hinge_disp(h, margin)
+            elif loss_type == "cov":
+                return self._cov_disp(h, min_var=1e-3, var_w=var_w)
+            else:  # default: "infonce_cos"
+                return self._infonce_cos(h, tau=tau)
+
+        disp_losses = []
+        if "T" in targets:    disp_losses.append(disp(t_h))
+        if "R" in targets:    disp_losses.append(disp(r_h))
+        if "Cond" in targets: disp_losses.append(disp(cond_h))
+        if not disp_losses:
+            return torch.tensor(0.0, device=state.device, dtype=state.dtype)
+        return weight * torch.stack(disp_losses).sum()
+
     def condition_sample(
         self,
         state: torch.Tensor,
@@ -388,6 +576,75 @@ class GO1Model(PreTrainedModel):
             noisy_action = noisy_action.to(dtype)
 
         return noisy_action
+
+    def meanflow_sample(
+        self,
+        state: torch.Tensor,                                   # [B, state_dim]
+        vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]],
+        attention_mask: torch.Tensor,                          # [B, vlm_len] bool
+        ctrl_freqs: torch.Tensor,                              # [B, 1] (int or float ok)
+    ) -> torch.Tensor:
+        """
+        Multi-step MeanFlow sampling using the scheduler's timesteps as a grid.
+
+        We construct an increasing grid 0 = t_0 < ... < t_K = 1 from
+        self.noise_scheduler_sample.timesteps (integer grid) and apply:
+            z_{t_{i+1}} = z_{t_i} + u_theta(z_{t_i}, r=t_{i+1}, t=t_i) * (t_{i+1} - t_i)
+
+        When K==1 this recovers the original one-step rule.
+        """
+        device = state.device
+        dtype  = self.torch_dtype
+
+        B = state.shape[0]
+        # Initialize z_{t0} from the noise prior (same shape as actions)
+        z = torch.randn((B, self.action_chunk_size, self.action_dim), device=device, dtype=dtype)
+
+        # Build the time grid from the scheduler
+        # Example: DPMSolver gives descending ints like [999, ..., 0].
+        self.noise_scheduler_sample.set_timesteps(self.num_inference_timesteps)
+        raw_ts = self.noise_scheduler_sample.timesteps.to(device).float()  # [K], typically descending
+
+        if raw_ts.numel() == 0:
+            # Fallback to strict one-step (0 -> 1)
+            t = torch.zeros((B, 1), device=device, dtype=torch.float32)
+            r = torch.ones((B, 1),  device=device, dtype=torch.float32)
+            u = self._u_theta(
+                z_t=z, t=t, r=r, state=state,
+                ctrl_freqs=ctrl_freqs, attention_mask=attention_mask,
+                vlm_key_values_downsample=vlm_key_values_downsample,
+            )
+            return (z + u).to(dtype)
+
+        # Map integer 'raw_ts' to normalized [0,1] with ascending order:
+        #   largest raw_ts -> 0.0, smallest raw_ts -> 1.0
+        t_max = max(raw_ts.max().item(), 1.0)
+        t_norm = (t_max - raw_ts) / t_max                     # ascending in [0,1]
+        # Append the terminal time 1.0 to form pairs (t_i, t_{i+1})
+        t_grid = torch.cat([t_norm, t_norm.new_tensor([1.0])], dim=0)  # [K+1]
+
+        # Multi-step MeanFlow updates
+        K = raw_ts.numel()
+        for i in range(K):
+            t_cur  = t_grid[i].item()
+            t_next = t_grid[i + 1].item()
+
+            # Batch broadcasted time tokens
+            t_b = torch.full((B, 1), t_cur,  device=device, dtype=torch.float32)
+            r_b = torch.full((B, 1), t_next, device=device, dtype=torch.float32)
+
+            u_pred = self._u_theta(
+                z_t=z, t=t_b, r=r_b, state=state,
+                ctrl_freqs=ctrl_freqs, attention_mask=attention_mask,
+                vlm_key_values_downsample=vlm_key_values_downsample,
+            )  # [B, H, action_dim]
+
+            # Δt as a scalar; broadcast over [B,H,D]
+            dt = torch.tensor(t_next - t_cur, device=device, dtype=z.dtype)
+            z = (z + dt * u_pred).to(dtype)
+
+        return z
+
 
     def common_process(
         self,
@@ -477,59 +734,85 @@ class GO1Model(PreTrainedModel):
         action_loss = torch.tensor(0.0, dtype=state.dtype, device=state.device)
         action_logits = None
         if self.training:
-            # Sample noise that we'll add to the actions
-            noise = torch.randn(action_gts.shape, dtype=action_gts.dtype, device=action_gts.device)
-            timesteps = torch.randint(0, self.num_train_timesteps, (B, 1), device=action_gts.device).long()
-            timestep_tokens = self.time_embedder(timesteps)  # (B, 1, C)
-            freq_tokens = self.freq_embedder(ctrl_freqs)  # (B, 1, C)
-            noisy_action = self.noise_scheduler.add_noise(action_gts, noise, timesteps)  # (B, H, C)
+            if self.decoder_type == "DDPM":
+                # --- existing diffusion training (unchanged) ---
+                noise = torch.randn(action_gts.shape, dtype=action_gts.dtype, device=action_gts.device)
+                timesteps = torch.randint(0, self.num_train_timesteps, (B, 1), device=action_gts.device).long()
+                timestep_tokens = self.time_embedder(timesteps)  # (B, 1, C)
+                freq_tokens = self.freq_embedder(ctrl_freqs)  # (B, 1, C)
+                noisy_action = self.noise_scheduler.add_noise(action_gts, noise, timesteps)  # (B, H, C)
 
-            state_trajs = self.state_adaptor(state)
-            action_trajs = self.action_adaptor(noisy_action)
-            state_action_trajs = torch.cat([state_trajs, action_trajs], dim=1)
+                state_trajs = self.state_adaptor(state)
+                action_trajs = self.action_adaptor(noisy_action)
+                state_action_trajs = torch.cat([state_trajs, action_trajs], dim=1)
 
-            state_action_trajs_w_tfps = torch.cat(
-                [timestep_tokens, freq_tokens, state_action_trajs], dim=1
-            )  # (B, H+3, C)
+                state_action_trajs_w_tfps = torch.cat(
+                    [timestep_tokens, freq_tokens, state_action_trajs], dim=1
+                )  # (B, H+3, C)
 
-            # Action expert as diffusion head
-            if self.enable_lam:
-                vlm_key_values_downsample = latent_vlm_key_values_downsample
-                attention_mask = torch.cat(
-                    (
-                        attention_mask,
-                        torch.ones(
-                            B, self.latent_planner.latent_token_nums, dtype=torch.bool, device=attention_mask.device
+                # Action expert as diffusion head
+                if self.enable_lam:
+                    vlm_key_values_downsample = latent_vlm_key_values_downsample
+                    attention_mask = torch.cat(
+                        (
+                            attention_mask,
+                            torch.ones(
+                                B, self.latent_planner.latent_token_nums, dtype=torch.bool, device=attention_mask.device
+                            ),
                         ),
-                    ),
-                    dim=1,
+                        dim=1,
+                    )
+
+                outputs = self.action_model(state_action_trajs_w_tfps, attention_mask, vlm_key_values_downsample)
+                state_action_output_tokens = outputs[0]
+                action_output_tokens = state_action_output_tokens[:, -self.action_chunk_size :, ...]
+                action_logits = self.final_layer(action_output_tokens)
+
+                # Calculate action mse loss using output action chunk
+                action_loss = self.calc_action_diffusion_loss(
+                    action_logits=action_logits,
+                    action_gts=action_gts,
+                    pred_type="sample",
                 )
+            elif self.decoder_type == "mean_flow":
+                # --- NEW: MeanFlow training ---
+                if self.enable_lam:
+                    vlm_key_values_downsample = latent_vlm_key_values_downsample
+                    attention_mask = torch.cat(
+                        (
+                            attention_mask,
+                            torch.ones(
+                                B, self.latent_planner.latent_token_nums, dtype=torch.bool, device=attention_mask.device
+                            ),
+                        ),
+                        dim=1,
+                    )
 
-            outputs = self.action_model(state_action_trajs_w_tfps, attention_mask, vlm_key_values_downsample)
-            state_action_output_tokens = outputs[0]
-            action_output_tokens = state_action_output_tokens[:, -self.action_chunk_size :, ...]
-            action_logits = self.final_layer(action_output_tokens)
-
-            # Calculate action mse loss using output action chunk
-            action_loss = self.calc_action_diffusion_loss(
-                action_logits=action_logits,
-                action_gts=action_gts,
-                pred_type="sample",
-            )
+                mf_loss, u_pred, disp_loss = self.calc_action_meanflow_loss(
+                    action_gts=action_gts,
+                    state=state,
+                    ctrl_freqs=ctrl_freqs,
+                    attention_mask=attention_mask,
+                    vlm_key_values_downsample=vlm_key_values_downsample,
+                )
+                # For logging/compat, expose "action_logits" as denoised actions estimate: e + u_pred (not used in loss)
+                # We rebuild e here for shape-consistent logging if needed.
+                with torch.no_grad():
+                    e_dbg = torch.zeros_like(action_gts)  # or keep last e if you prefer
+                action_logits = e_dbg + u_pred
+                action_loss = mf_loss + disp_loss
         else:
-            # Action expert as diffusion head
+            # --- inference ---
             if self.enable_lam:
                 vlm_key_values_downsample = latent_vlm_key_values_downsample
                 attention_mask = torch.cat(
                     (attention_mask, torch.ones(B, 4, dtype=torch.bool, device=attention_mask.device)), dim=1
                 )
 
-            action_logits = self.condition_sample(
-                state,
-                vlm_key_values_downsample,
-                attention_mask,
-                ctrl_freqs,
-            )
+            if self.decoder_type == "DDPM":
+                action_logits = self.condition_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
+            elif self.decoder_type == "mean_flow":
+                action_logits = self.meanflow_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
 
         loss = action_loss
 
