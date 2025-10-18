@@ -37,7 +37,7 @@ class GO1ModelConfig(PretrainedConfig):
         max_dynamic_patch=6,
         latent_planning=False,
         norm=False,
-        decoder_type: Literal["DDPM", "mean_flow"] = "DDPM",
+        decoder_type: Literal["DDPM", "mean_flow", "flow_matching"] = "DDPM",
         dispersive: Optional[Dict[str, Any]] = None,
         **kwargs,
     ):

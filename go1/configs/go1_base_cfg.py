@@ -122,14 +122,14 @@ class BaseModelArguments:
     )
     action_chunk_size: int = field(default=30, metadata={"help": "The size of action chunks. Default is 30."})
     
-    # MeanFlow decoder configuration
-    decoder_type: Literal["DDPM", "mean_flow"] = field(
+    # Decoder configuration
+    decoder_type: Literal["DDPM", "mean_flow", "flow_matching"] = field(
         default="DDPM", 
-        metadata={"help": "Decoder type: 'DDPM' for diffusion or 'mean_flow' for MeanFlow. Default is 'DDPM'."}
+        metadata={"help": "Decoder type: 'DDPM' for diffusion, 'mean_flow' for MeanFlow, or 'flow_matching' for Flow Matching. Default is 'DDPM'."}
     )
     dispersive_use: bool = field(
         default=False, 
-        metadata={"help": "Whether to use dispersive regularization for MeanFlow. Default is False."}
+        metadata={"help": "Whether to use dispersive regularization for MeanFlow/FlowMatching. Default is False."}
     )
     dispersive_weight: float = field(
         default=0.5, 

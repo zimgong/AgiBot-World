@@ -137,8 +137,10 @@ class GO1Model(PreTrainedModel):
         self.llm_arch_name = config.llm_config.architectures[0]
         self.torch_dtype = torch_dtype
 
-        # MeanFlow decoder configuration
-        self.decoder_type: Literal["DDPM", "mean_flow"] = getattr(config, "decoder_type", "DDPM")
+        # Decoder configuration (back-compat default)
+        self.decoder_type: Literal["DDPM", "mean_flow", "flow_matching"] = getattr(
+            config, "decoder_type", "DDPM"
+        )
         self.dispersive_cfg = getattr(config, "dispersive", None)
         self.use_dispersive = bool(self.dispersive_cfg and self.dispersive_cfg.get("use", False))
         
@@ -241,7 +243,7 @@ class GO1Model(PreTrainedModel):
         self.time_embedder = TimestepEmbedder(action_hidden_size, dtype=self.torch_dtype)
         self.freq_embedder = TimestepEmbedder(action_hidden_size, dtype=self.torch_dtype)
         
-        # MeanFlow: extra time embedder for end-time r
+        # MeanFlow/FM: extra time embedder for end-time r (for FM we set r=t)
         self.time_embedder_r = TimestepEmbedder(action_hidden_size, dtype=self.torch_dtype)
 
         self.state_adaptor = nn.Sequential(
@@ -408,6 +410,18 @@ class GO1Model(PreTrainedModel):
         u_pred = self.final_layer(action_h)        # [B, H, action_dim]
         return u_pred
 
+    # === FlowMatching: reuse the same head, passing r=t so shapes stay identical ===
+    def _v_theta(self, z_t: torch.Tensor, t: torch.Tensor,
+                 state: torch.Tensor, ctrl_freqs: torch.Tensor,
+                 attention_mask: torch.Tensor,
+                 vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]]):
+        return self._u_theta(
+            z_t=z_t, t=t, r=t, state=state,
+            ctrl_freqs=ctrl_freqs,
+            attention_mask=attention_mask,
+            vlm_key_values_downsample=vlm_key_values_downsample,
+        )
+
     def calc_action_meanflow_loss(
         self,
         action_gts: torch.Tensor,                         # [B, H, action_dim]
@@ -464,6 +478,43 @@ class GO1Model(PreTrainedModel):
             disp_loss = self.calc_dispersive_loss(state, ctrl_freqs, t, r)
 
         return mf_loss, u_pred, disp_loss
+
+    # === FlowMatching loss (no JVP) ===
+    def calc_action_flowmatch_loss(
+        self,
+        action_gts: torch.Tensor,                         # [B, H, D]
+        state: torch.Tensor,                              # [B, state_dim]
+        ctrl_freqs: torch.Tensor,                         # [B, 1]
+        attention_mask: torch.Tensor,                     # [B, vlm_len]
+        vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]],
+    ):
+        B, H, D = action_gts.shape
+        device = action_gts.device
+        dtype  = action_gts.dtype
+
+        # Noise and interpolation time
+        e = torch.randn_like(action_gts)
+        t = torch.rand(B, 1, device=device, dtype=torch.float32)  # U[0,1]
+        t_b = t.view(B, 1, 1).to(e.dtype)
+        z_t = (1.0 - t_b) * e + t_b * action_gts                  # [B,H,D]
+        v   = (action_gts - e)                                    # [B,H,D]
+
+        # Predict instantaneous velocity field
+        v_pred = self._v_theta(
+            z_t=z_t, t=t, state=state,
+            ctrl_freqs=ctrl_freqs,
+            attention_mask=attention_mask,
+            vlm_key_values_downsample=vlm_key_values_downsample,
+        )
+
+        fm_loss = F.mse_loss(v_pred, v.to(v_pred.dtype))
+
+        disp_loss = torch.tensor(0.0, device=device, dtype=dtype)
+        if self.use_dispersive:
+            # same light-weight dispersion used for MeanFlow
+            disp_loss = self.calc_dispersive_loss(state, ctrl_freqs, t, t)  # r=t
+
+        return fm_loss, v_pred, disp_loss
 
     # === MeanFlow: dispersive losses (lightweight variants) ===
     def _pairwise_cos(self, x: torch.Tensor) -> torch.Tensor:
@@ -645,6 +696,51 @@ class GO1Model(PreTrainedModel):
 
         return z
 
+    def flowmatch_sample(
+        self,
+        state: torch.Tensor,                                   # [B, state_dim]
+        vlm_key_values_downsample: Tuple[Tuple[torch.FloatTensor]],
+        attention_mask: torch.Tensor,                          # [B, vlm_len]
+        ctrl_freqs: torch.Tensor,                              # [B, 1]
+    ) -> torch.Tensor:
+        """
+        Multi-step ODE integration for Flow Matching:
+          z_{t_{i+1}} = z_{t_i} + v_theta(z_{t_i}, t_i) * (t_{i+1} - t_i)
+        using the same scheduler grid you use for DPMSolver.
+        """
+        device = state.device
+        dtype  = self.torch_dtype
+        B = state.shape[0]
+        z = torch.randn((B, self.action_chunk_size, self.action_dim), device=device, dtype=dtype)
+
+        self.noise_scheduler_sample.set_timesteps(self.num_inference_timesteps)
+        raw_ts = self.noise_scheduler_sample.timesteps.to(device).float()  # descending ints
+        if raw_ts.numel() == 0:
+            t = torch.zeros((B, 1), device=device, dtype=torch.float32)
+            v_pred = self._v_theta(
+                z_t=z, t=t, state=state,
+                ctrl_freqs=ctrl_freqs, attention_mask=attention_mask,
+                vlm_key_values_downsample=vlm_key_values_downsample,
+            )
+            return (z + v_pred).to(dtype)
+
+        t_max = max(raw_ts.max().item(), 1.0)
+        t_norm = (t_max - raw_ts) / t_max  # ascending [0,1]
+        t_grid = torch.cat([t_norm, t_norm.new_tensor([1.0])], dim=0)
+        K = raw_ts.numel()
+        for i in range(K):
+            t_cur  = t_grid[i].item()
+            t_next = t_grid[i + 1].item()
+            t_b = torch.full((B, 1), t_cur,  device=device, dtype=torch.float32)
+            v_pred = self._v_theta(
+                z_t=z, t=t_b, state=state,
+                ctrl_freqs=ctrl_freqs, attention_mask=attention_mask,
+                vlm_key_values_downsample=vlm_key_values_downsample,
+            )
+            dt = torch.tensor(t_next - t_cur, device=device, dtype=z.dtype)
+            z = (z + dt * v_pred).to(dtype)
+        return z
+
 
     def common_process(
         self,
@@ -801,6 +897,29 @@ class GO1Model(PreTrainedModel):
                     e_dbg = torch.zeros_like(action_gts)  # or keep last e if you prefer
                 action_logits = e_dbg + u_pred
                 action_loss = mf_loss + disp_loss
+            elif self.decoder_type == "flow_matching":
+                # --- NEW: FlowMatching training ---
+                if self.enable_lam:
+                    vlm_key_values_downsample = latent_vlm_key_values_downsample
+                    attention_mask = torch.cat(
+                        (
+                            attention_mask,
+                            torch.ones(
+                                B, self.latent_planner.latent_token_nums, dtype=torch.bool, device=attention_mask.device
+                            ),
+                        ),
+                        dim=1,
+                    )
+                fm_loss, v_pred, disp_loss = self.calc_action_flowmatch_loss(
+                    action_gts=action_gts,
+                    state=state,
+                    ctrl_freqs=ctrl_freqs,
+                    attention_mask=attention_mask,
+                    vlm_key_values_downsample=vlm_key_values_downsample,
+                )
+                # for logging consistency expose predicted velocity
+                action_logits = v_pred
+                action_loss = fm_loss + disp_loss
         else:
             # --- inference ---
             if self.enable_lam:
@@ -813,6 +932,8 @@ class GO1Model(PreTrainedModel):
                 action_logits = self.condition_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
             elif self.decoder_type == "mean_flow":
                 action_logits = self.meanflow_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
+            elif self.decoder_type == "flow_matching":
+                action_logits = self.flowmatch_sample(state, vlm_key_values_downsample, attention_mask, ctrl_freqs)
 
         loss = action_loss
 
