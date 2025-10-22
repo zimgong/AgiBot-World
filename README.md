@@ -329,14 +329,14 @@ All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creat
 - For the full authorship and detailed contributions, please refer to [contributions](CONTRIBUTING.md).
 - In alphabetical order by surname:
 ```BibTeX
-@article{bu2025agibot,
+@article{bu2025agibot_arxiv,
   title={Agibot world colosseo: A large-scale manipulation platform for scalable and intelligent embodied systems},
   author={Bu, Qingwen and Cai, Jisong and Chen, Li and Cui, Xiuqi and Ding, Yan and Feng, Siyuan and Gao, Shenyuan and He, Xindong and Huang, Xu and Jiang, Shu and others},
   journal={arXiv preprint arXiv:2503.06669},
   year={2025}
 }
 
-@inproceedings{bu2025agibot,
+@inproceedings{bu2025agibot_iros,
   title={Agibot world colosseo: A large-scale manipulation platform for scalable and intelligent embodied systems},
   author={Bu, Qingwen and Cai, Jisong and Chen, Li and Cui, Xiuqi and Ding, Yan and Feng, Siyuan and He, Xindong and Huang, Xu and others},
   booktitle={2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
