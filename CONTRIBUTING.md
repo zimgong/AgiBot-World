@@ -49,4 +49,4 @@
 
 ### 🚀 Project Co-lead and Advising
 > Research direction, project coordination, technical advising
-- *Maoqing Yao, Yu Qiao, Hongyang Li, [Jianlan Luo](https://scholar.google.co.uk/citations?user=SJoRNbYAAAAJ&hl=en&oi=ao), [Jiangmiao Pang](https://scholar.google.co.uk/citations?user=ssSfKpAAAAAJ&hl=en&oi=ao), [Bin Zhao](https://scholar.google.com/citations?user=DQB0hqwAAAAJ), [Junchi Yan](https://scholar.google.co.uk/citations?user=ga230VoAAAAJ&hl=en&oi=ao), Ping Luo*
+- *Hongyang Li, Maoqing Yao, Ping Luo, Yu Qiao, Jianlan Luo, Bin Zhao, Junchi Yan*
