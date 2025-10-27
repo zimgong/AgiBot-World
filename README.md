@@ -321,7 +321,8 @@ Currently we have:
 <!-- <p align="right">(<a href="#top">back to top</a>)</p> -->
 
 
-## License and Citation📄   <a name="liscenseandcitation"></a>
+
+## 📄 License and Citation   <a name="liscenseandcitation"></a>
 
 All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
 
@@ -350,4 +351,25 @@ All the data and code within this repo are under [CC BY-NC-SA 4.0](https://creat
   journal={arXiv preprint arXiv:2507.06219},
   year={2025}
 }
+```
+
+## 📝 Blogs  <a name="blogs"></a>
+```BibTeX
+@misc{AgiBotWorldTeam2025agibot-world-colosseo,
+          title        = {Introducing AgiBot World Colosseo: A Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems},
+          author       = {Shi, Modi and Lu, Yuxiang and Wang, Huijie and Xie, Chengen and Bu, Qingwen},
+          year         = {2025},
+          month        = {March},
+          howpublished = {\url{https://opendrivelab.com/AgiBot-World/}},
+          note         = {Blog post},
+        }
+
+@misc{AgiBotWorldTeam2025open-sourcing-go1,
+          title        = {Open-sourcing GO-1: The Bitter Lessons of Building VLA Systems at Scale},
+          author       = {Shi, Modi and Lu, Yuxiang and Wang, Huijie and Yang, Shaoze},
+          year         = {2025},
+          month        = {September},
+          howpublished = {\url{https://opendrivelab.com/OpenGO1/}},
+          note         = {Blog post},
+        }
 ```
