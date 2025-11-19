@@ -87,11 +87,11 @@ class InternLM2Config(PretrainedConfig):
         # num_key_value_heads=8,
 
         # Air Small
-        hidden_size=512,
-        intermediate_size=2048,
-        num_hidden_layers=12,
-        num_attention_heads=8,
-        num_key_value_heads=4,
+        hidden_size=256,
+        intermediate_size=1024,
+        num_hidden_layers=6,
+        num_attention_heads=4,
+        num_key_value_heads=2,
 
         hidden_act="silu",
         max_position_embeddings=32768,
