@@ -110,8 +110,11 @@ def build_datasets(
                 if v in dataset_stats:
                     dataset_stats[k] = dataset_stats.pop(v)
             # save the stats as json in checkpoint
-            with open(os.path.join(stats_save_path, "dataset_stats.json"), "w") as f:
-                json.dump(convert(dataset_stats), f)
+            if not dist.is_initialized() or dist.get_rank() == 0:
+                with open(os.path.join(stats_save_path, "dataset_stats.json"), "w") as f:
+                    json.dump(convert(dataset_stats), f)
+            if dist.is_initialized():
+                dist.barrier()
     else:
         raise NotImplementedError(f"Unsupported dataset type: {dataset_args.dataset_type}")
 
